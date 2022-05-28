@@ -19,6 +19,21 @@ const validationSchema = yup.object({
     .string("Enter your password")
     .min(8, "Password should be of minimum 8 characters length")
     .required("Password is required"),
+  confirmationPassword: yup
+    .string("Enter your password")
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required")
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
+});
+const validationSchemaSignIn = yup.object({
+  email: yup
+    .string("Enter your email")
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: yup
+    .string("Enter your password")
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required"),
 });
 const styles = {
   title: {
@@ -59,14 +74,27 @@ const styles = {
     width: "150px",
   },
 };
-export default function Forms({ signUp, reset }) {
+export default function Forms({ signUp, reset, func }) {
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
+      confirmationPassword: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      func(values.email, values.password);
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
+  const formikSignIn = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: validationSchemaSignIn,
+    onSubmit: (values) => {
+      func(values.email, values.password);
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -99,7 +127,23 @@ export default function Forms({ signUp, reset }) {
               error={formik.touched.password && Boolean(formik.errors.password)}
               helperText={formik.touched.password && formik.errors.password}
             />
-
+            <TextField
+              fullWidth
+              id="confirmationPassword"
+              name="confirmationPassword"
+              label="Confirmation Password"
+              type="password"
+              value={formik.values.confirmationPassword}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.confirmationPassword &&
+                Boolean(formik.errors.confirmationPassword)
+              }
+              helperText={
+                formik.touched.confirmationPassword &&
+                formik.errors.confirmationPassword
+              }
+            />
             <Button color="primary" variant="contained" fullWidth type="submit">
               Submit
             </Button>
@@ -154,7 +198,7 @@ export default function Forms({ signUp, reset }) {
   }
   return (
     <Paper sx={styles.paper}>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formikSignIn.handleSubmit}>
         <Typography variant="h3" component="h1" sx={styles.title}>
           Sign In
         </Typography>
@@ -164,10 +208,12 @@ export default function Forms({ signUp, reset }) {
             id="email"
             name="email"
             label="Email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            value={formikSignIn.values.email}
+            onChange={formikSignIn.handleChange}
+            error={
+              formikSignIn.touched.email && Boolean(formikSignIn.errors.email)
+            }
+            helperText={formikSignIn.touched.email && formikSignIn.errors.email}
           />
           <TextField
             fullWidth
@@ -175,10 +221,15 @@ export default function Forms({ signUp, reset }) {
             name="password"
             label="Password"
             type="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
+            value={formikSignIn.values.password}
+            onChange={formikSignIn.handleChange}
+            error={
+              formikSignIn.touched.password &&
+              Boolean(formikSignIn.errors.password)
+            }
+            helperText={
+              formikSignIn.touched.password && formikSignIn.errors.password
+            }
           />
 
           <Button color="primary" variant="contained" fullWidth type="submit">

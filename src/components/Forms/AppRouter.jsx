@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../context/AuthContext";
 import Reset from "../../pages/Reset";
 import SignIn from "../../pages/SignIn";
 import SignUp from "../../pages/SignUp";
@@ -13,7 +13,7 @@ export default function AppRouter() {
     <Routes>
       {isAuth ? (
         <>
-          <Route path="/todoApp" element={<ToDoListPage />} />
+          <Route path="/" element={<ToDoListPage />} />
         </>
       ) : (
         <>
