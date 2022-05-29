@@ -7,9 +7,12 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
-
+import { auth } from "../firebase/firebase";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
+import { useNavigate } from "react-router-dom";
+import Header from "../pages/Header";
 const validationSchema = yup.object({
   email: yup
     .string("Enter your email")
@@ -35,10 +38,17 @@ const validationSchemaSignIn = yup.object({
     .min(8, "Password should be of minimum 8 characters length")
     .required("Password is required"),
 });
+const validationSchemaReset = yup.object({
+  email: yup
+    .string("Enter your email")
+    .email("Enter a valid email")
+    .required("Email is required"),
+});
 const styles = {
   title: {
     textAlign: "center",
     marginBottom: "20px",
+    marginTop: "25px",
   },
 
   paper: {
@@ -75,6 +85,18 @@ const styles = {
   },
 };
 export default function Forms({ signUp, reset, func }) {
+  const navigate = useNavigate();
+  const provider = new GoogleAuthProvider();
+  function signInWithGoogle() {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log(result);
+        navigate("../");
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -98,9 +120,20 @@ export default function Forms({ signUp, reset, func }) {
       alert(JSON.stringify(values, null, 2));
     },
   });
+  const formikReset = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: validationSchemaReset,
+    onSubmit: (values) => {
+      func(values.email, values.password);
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
   if (signUp) {
     return (
       <Paper sx={styles.paper}>
+        <Header />
         <form onSubmit={formik.handleSubmit}>
           <Typography variant="h3" component="h1" sx={styles.title}>
             Sign Up
@@ -152,7 +185,8 @@ export default function Forms({ signUp, reset, func }) {
               color="primary"
               variant="contained"
               fullWidth
-              type="submit"
+              type="button"
+              onClick={signInWithGoogle}
             >
               <GoogleIcon sx={styles.icon}></GoogleIcon>
               Sign Up with google
@@ -168,7 +202,8 @@ export default function Forms({ signUp, reset, func }) {
   if (reset) {
     return (
       <Paper sx={styles.paper}>
-        <form onSubmit={formik.handleSubmit}>
+        <Header />
+        <form onSubmit={formikReset.handleSubmit}>
           <Typography variant="h3" component="h1" sx={styles.title}>
             Reset the password
           </Typography>
@@ -178,10 +213,12 @@ export default function Forms({ signUp, reset, func }) {
               id="email"
               name="email"
               label="Email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
+              value={formikReset.values.email}
+              onChange={formikReset.handleChange}
+              error={
+                formikReset.touched.email && Boolean(formikReset.errors.email)
+              }
+              helperText={formikReset.touched.email && formikReset.errors.email}
             />
             <Button color="primary" variant="contained" fullWidth type="submit">
               Submit
@@ -198,6 +235,7 @@ export default function Forms({ signUp, reset, func }) {
   }
   return (
     <Paper sx={styles.paper}>
+      <Header />
       <form onSubmit={formikSignIn.handleSubmit}>
         <Typography variant="h3" component="h1" sx={styles.title}>
           Sign In
@@ -241,6 +279,7 @@ export default function Forms({ signUp, reset, func }) {
             variant="contained"
             fullWidth
             type="submit"
+            onClick={signInWithGoogle}
           >
             <GoogleIcon sx={styles.icon}></GoogleIcon>
             Sign In with google

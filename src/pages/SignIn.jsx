@@ -1,6 +1,6 @@
 import { Container } from "@mui/material";
 import React from "react";
-import Forms from "../components/Forms/Forms";
+import Forms from "../components/Forms";
 import { auth } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 export default function SignIn() {

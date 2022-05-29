@@ -27,54 +27,25 @@ export default function AuthProivider({ children }) {
   const [loading, setLoading] = useState(true);
   const provider = new GoogleAuthProvider();
   const dispatch = useDispatch();
-  function signInWithGoogle() {
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  }
-
-  async function logOut() {
-    await signOut(auth)
-      .then(() => {
-        console.log("Sign-out successful.");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
-  //   async function setCV(cvName, data) {
-  //     return await setDoc(doc(db, `${currentUser.uid}`, cvName), data);
-  //   }
-  //   async function getCV() {
-  //     const querySnapshot = await getDocs(collection(db, `${currentUser.uid}`));
-  //     const temp = [];
-  //     querySnapshot.forEach(async (doc) => {
-  //       temp.push(doc.data());
-  //       console.log(CVdata);
-  //     });
-  //     setCVdata(temp);
-  //   }
-  //   async function deleteCV(cvName) {
-  //     return await deleteDoc(doc(db, `${currentUser.uid}`, cvName));
-  //   }
-
+  const [isVerified, setIsVerified] = useState(false);
+  const [user, setUser] = useState(null);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log(user);
       dispatch({
         type: addUser,
         payload: {
+          displayName: user?.displayName,
           email: user?.email,
           token: user?.token,
-          id: user?.id,
+          id: user?.uid,
+          emailVerified: user?.emailVerified,
         },
       });
       setIsAuth(!!user?.email);
       setLoading(false);
+      setIsVerified(user?.emailVerified);
+      setUser(user);
     });
 
     return unsubscribe;
@@ -82,6 +53,8 @@ export default function AuthProivider({ children }) {
   const value = {
     isAuth,
     loading,
+    isVerified,
+    user,
   };
   return (
     <AuthContext.Provider value={value}>
