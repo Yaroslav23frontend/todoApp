@@ -10,8 +10,10 @@ import Box from "@mui/material/Box";
 import Items from "../components/Items";
 import { useAuth } from "../context/AuthContext";
 import Verified from "../components/Verified";
+import AddItem from "../components/AddItem";
 export default function ToDoListPage() {
-  const [valueNav, setValueNav] = useState("one");
+  const [valueNav, setValueNav] = useState("all");
+  const [searchData, setSearchData] = useState("");
   const styles = {
     title: {
       textAlign: "center",
@@ -54,6 +56,9 @@ export default function ToDoListPage() {
       justifyContent: "center",
       gap: "20px",
     },
+    tabs: {
+      marginBottom: "20px",
+    },
   };
   async function logOut() {
     await signOut(auth)
@@ -81,6 +86,10 @@ export default function ToDoListPage() {
             id="standard-basic"
             label="Search"
             variant="standard"
+            value={searchData}
+            onChange={(e) => {
+              setSearchData(e.target.value);
+            }}
           />
           <Tabs
             value={valueNav}
@@ -89,27 +98,19 @@ export default function ToDoListPage() {
             variant="fullWidth"
             indicatorColor="secondary"
             aria-label="secondary tabs example"
+            sx={styles.tabs}
           >
-            <Tab value="one" label="All" />
-            <Tab value="two" label="Active" />
-            <Tab value="three" label="Completed" />
+            <Tab value="all" label="All" />
+            <Tab value={""} label="Active" />
+            <Tab value={"true"} label="Completed" />
           </Tabs>
-          <Items />
-          <Box sx={styles.boxAddNew}>
-            <TextField
-              sx={styles.inputAddItem}
-              id="standard-basic"
-              label="New item"
-              variant="standard"
-            />
-            <Button
-              sx={styles.buttonSignOut}
-              variant="outlined"
-              onClick={logOut}
-            >
-              Add
-            </Button>
-          </Box>
+          <Items
+            filter={valueNav !== "all" ? true : false}
+            completed={!!valueNav}
+            searchData={searchData}
+            search={searchData !== "" ? true : false}
+          />
+          <AddItem />
         </>
       ) : (
         <Verified />
