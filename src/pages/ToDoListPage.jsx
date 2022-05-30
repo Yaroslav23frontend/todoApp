@@ -11,9 +11,16 @@ import Items from "../components/Items";
 import { useAuth } from "../context/AuthContext";
 import Verified from "../components/Verified";
 import AddItem from "../components/AddItem";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import CustomBox from "../components/CustomBox";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 export default function ToDoListPage() {
   const [valueNav, setValueNav] = useState("all");
   const [searchData, setSearchData] = useState("");
+  const [filter, setFilter] = useState("");
+  const [sort, setSort] = useState("");
   const styles = {
     title: {
       textAlign: "center",
@@ -45,6 +52,7 @@ export default function ToDoListPage() {
     },
     buttonSignOut: {
       alignSelf: "flex-end",
+      width: "100px",
     },
     boxAddNew: {
       width: "95%",
@@ -57,7 +65,49 @@ export default function ToDoListPage() {
       gap: "20px",
     },
     tabs: {
-      marginBottom: "20px",
+      marginBottom: "10px",
+    },
+    topNav: {
+      display: "flex",
+      alignItems: "center",
+      color: "#eee",
+      width: "calc(100% - 20px)",
+      justifyContent: "space-between",
+      marginLeft: "10px",
+      marginRight: "10px",
+    },
+    colorsBox: {
+      display: "flex",
+      alignItems: "center",
+      color: "#eee",
+      width: "100%",
+    },
+    colors: {
+      width: "90px",
+      textAlign: "center",
+    },
+    yellow: {
+      backgroundColor: "yellow",
+    },
+    red: {
+      backgroundColor: "red",
+    },
+    blue: {
+      backgroundColor: "blue",
+    },
+    grey: {
+      backgroundColor: "gray",
+    },
+    itemsBox: {
+      width: "95%",
+      maxHeight: "calc(100vh - 300px)",
+      overflowY: "auto",
+      tabSize: "0px",
+    },
+    select: {
+      alignSelf: "flex-start",
+      minWidth: 120,
+      marginLeft: 5.5,
     },
   };
   async function logOut() {
@@ -71,6 +121,7 @@ export default function ToDoListPage() {
   }
 
   function handleChangeIndexNav(event, index) {
+    console.log(index);
     setValueNav(index);
   }
   const { isVerified } = useAuth();
@@ -102,14 +153,62 @@ export default function ToDoListPage() {
           >
             <Tab value="all" label="All" />
             <Tab value={""} label="Active" />
-            <Tab value={"true"} label="Completed" />
+            <Tab value={true} label="Completed" />
           </Tabs>
-          <Items
-            filter={valueNav !== "all" ? true : false}
-            completed={!!valueNav}
-            searchData={searchData}
-            search={searchData !== "" ? true : false}
-          />
+          <Box sx={{ alignSelf: "flex-start" }}>
+            <FormControl variant="standard" sx={styles.select}>
+              <InputLabel id="demo-simple-select-standard-label">
+                Filter
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={filter}
+                onChange={(e) => {
+                  setFilter(e.target.value);
+                }}
+                label="Filter"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={"Today"}>Today</MenuItem>
+                <MenuItem value={"Overdue"}>Overdue</MenuItem>
+                <MenuItem value={"Upcoming"}>Upcoming</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl variant="standard" sx={styles.select}>
+              <InputLabel id="demo-simple-select-standard-label2">
+                Sort by date
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard2"
+                value={sort}
+                onChange={(e) => {
+                  setSort(e.target.value);
+                }}
+                label="Sort"
+              >
+                <MenuItem value="">
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={"A to Z"}>A to Z</MenuItem>
+                <MenuItem value={"Z to A"}>Z to A</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+          <CustomBox>
+            <Items
+              filter={valueNav !== "all" ? true : false}
+              completed={valueNav === "all" ? "all" : Boolean(valueNav)}
+              searchData={searchData}
+              search={searchData !== "" ? true : false}
+              filterDate={filter}
+              sort={sort}
+            />
+          </CustomBox>
+
           <AddItem />
         </>
       ) : (

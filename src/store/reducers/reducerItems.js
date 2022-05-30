@@ -9,6 +9,8 @@ export function reducerItems(state = [], action) {
           item: action.payload.item,
           id: action.payload.id,
           completed: false,
+          dueDate: dateFormat(action.payload.dueDate),
+          days: numberOfDays(action.payload.dueDate),
         },
       ];
     case addItems:
@@ -29,4 +31,51 @@ export function reducerItems(state = [], action) {
     default:
       return state;
   }
+}
+function getDayOfYear(date = new Date()) {
+  const timestamp1 = Date.UTC(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
+  const timestamp2 = Date.UTC(date.getFullYear(), 0, 0);
+
+  const differenceInMilliseconds = timestamp1 - timestamp2;
+
+  const differenceInDays = differenceInMilliseconds / 1000 / 60 / 60 / 24;
+
+  return differenceInDays;
+}
+function numberOfDays(_date) {
+  const date = new Date();
+  const dueDate = new Date(_date);
+  const numberOfDayCurrent = getDayOfYear(date);
+  const numberOfDayDue = getDayOfYear(dueDate);
+  const dueDateObject = {
+    month: dueDate.getMonth(),
+    day: dueDate.getDate(),
+    year: dueDate.getFullYear(),
+  };
+  const dateObject = {
+    month: date.getMonth(),
+    day: date.getDate(),
+    year: date.getFullYear(),
+  };
+  if (_date !== "") {
+    return numberOfDayDue - numberOfDayCurrent;
+  }
+  return "";
+}
+function dateFormat(date) {
+  const tempDate = new Date(date);
+  const dateObject = {
+    month: tempDate.getMonth(),
+    day: tempDate.getDate(),
+    year: tempDate.getFullYear(),
+  };
+  return `${dateObject.day}/${
+    dateObject.month + 1 < 10
+      ? `0${dateObject.month + 1}`
+      : dateObject.month + 1
+  }/${dateObject.year}`;
 }

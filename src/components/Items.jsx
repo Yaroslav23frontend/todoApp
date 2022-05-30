@@ -3,10 +3,16 @@ import FormGroup from "@mui/material/FormGroup";
 import Item from "./item";
 import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
-export default function Items({ filter, completed, search, searchData }) {
+export default function Items({
+  completed,
+  search,
+  searchData,
+  filterDate,
+  sort,
+}) {
   const styles = {
     formGroup: {
-      width: "95%",
+      width: "calc(100% - 40px)",
     },
     text: {
       position: "absolute",
@@ -19,34 +25,49 @@ export default function Items({ filter, completed, search, searchData }) {
   let data = useSelector((state) => state.items);
   console.log(data);
   const filteredData = useMemo(() => {
-    if (filter) {
-      data = data.filter((el) => el.completed === completed);
+    if (typeof completed == "boolean") {
+      const filter = [...data.filter((el) => el.completed === completed)];
+      return filter;
     }
     if (search) {
-      data = data.filter((el) => el.item.includes(searchData));
+      const search = data.filter((el) => el.item.includes(searchData));
+      return search;
+    }
+
+    if (sort === "A to Z") {
+      const sorted = data.sort((a, b) => {
+        return a.days - b.days;
+      });
+      return sorted;
+    }
+    if (sort === "Z to A") {
+      const sorted = data.sort((a, b) => {
+        return b.days - a.days;
+      });
+      return sorted;
     }
     return data;
-  }, [searchData, completed, data]);
-
-  // if (filter) {
-  //   return (
-  //     <FormGroup sx={styles.formGroup}>
-  //       {data.length === 0 ? (
-  //         <Typography sx={styles.text} variant="h6" component="h2">
-  //           You don't have any tasks yet
-  //         </Typography>
-  //       ) : (
-  //         <>
-  //           {data
-  //             ?.filter((el) => el.completed === completed)
-  //             .map((el) => {
-  //               return <Item key={el.id} data={el} id={el.id} />;
-  //             })}
-  //         </>
-  //       )}
-  //     </FormGroup>
-  //   );
-  // }
+  }, [searchData, completed, data, sort]);
+  const filterdByDate = useMemo(() => {
+    if (filterDate !== "") {
+      const filter = [
+        ...filteredData.filter((el) => {
+          console.log(filterDate);
+          if (filterDate === "Today") {
+            return el.days === 0;
+          }
+          if (filterDate === "Overdue") {
+            return el.days < 0;
+          }
+          if (filterDate === "Upcoming") {
+            return el.days > 0 && el.days <= 5;
+          }
+        }),
+      ];
+      return filter;
+    }
+    return filteredData;
+  }, [filterDate, filteredData]);
   return (
     <FormGroup sx={styles.formGroup}>
       {data.length === 0 ? (
@@ -55,7 +76,7 @@ export default function Items({ filter, completed, search, searchData }) {
         </Typography>
       ) : (
         <>
-          {filteredData?.map((el) => {
+          {filterdByDate?.map((el) => {
             return <Item key={el.id} data={el} id={el.id} />;
           })}
         </>
