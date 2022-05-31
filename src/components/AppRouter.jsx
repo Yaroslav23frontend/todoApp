@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Reset from "../pages/Reset";
 import ResetRequest from "../pages/ResetRequest";
+import Settings from "../pages/Settings";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import ToDoListPage from "../pages/ToDoListPage";
@@ -15,6 +16,7 @@ export default function AppRouter() {
       {isAuth ? (
         <>
           <Route path="/" element={<ToDoListPage />} />
+          <Route path="/settings" element={<Settings />} />
         </>
       ) : (
         <>

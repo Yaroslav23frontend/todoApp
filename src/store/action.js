@@ -4,3 +4,5 @@ export const addItem = "ADD_ITEM";
 export const addItems = "ADD_ITEMS";
 export const deleteItem = "DELETE_ITEM";
 export const completedItem = "COMPLETED_ITEM";
+export const settings = "SETTINGS";
+export const resetSettings = "RESET_SETTINGS";
