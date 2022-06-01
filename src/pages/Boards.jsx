@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Button, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { signOut } from "firebase/auth";
@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import AddBoard from "../components/AddBoard";
 import Board from "../components/Board";
+import CustomModal from "../components/Modal";
 export default function Boards() {
   const navigate = useNavigate();
   const [searchData, setSearchData] = useState("");
@@ -35,6 +36,12 @@ export default function Boards() {
       });
   }
   const { isVerified } = useAuth();
+  const data = useMemo(() => {
+    if (searchData !== "") {
+      return boards.filter((el) => el.includes(searchData));
+    }
+    return boards;
+  }, [searchData, boards]);
   return (
     <Paper sx={styles.paper}>
       <Box sx={styles.topNav}>
@@ -60,11 +67,11 @@ export default function Boards() {
           />
 
           <CustomBox>
-            {boards.map((el) => {
-              return <Board data={el} />;
+            {data.map((el) => {
+              return <Board key={el} data={el} />;
             })}
           </CustomBox>
-
+          {/* <CustomModal open={true} /> */}
           <AddBoard />
         </>
       ) : (
