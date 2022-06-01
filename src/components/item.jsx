@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { db } from "../firebase/firebase";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc, deleteField } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteItem } from "../store/action";
 import { completedItem } from "../store/action";
@@ -15,7 +15,9 @@ export default function Item({ data, id }) {
   const [color, setColor] = useState(dateColor());
   async function delItem() {
     dispatch({ type: deleteItem, payload: id });
-    await deleteDoc(doc(db, `${user}`, `${id}`));
+    await updateDoc(doc(db, `${user}`, `todolist-1`), {
+      [id]: deleteField(),
+    });
   }
   async function updateItem(completed) {
     dispatch({

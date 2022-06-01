@@ -1,6 +1,7 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Boards from "../pages/Boards";
 import EmailChangedSuccess from "../pages/EmailChangedSuccess";
 import PasswordChanged from "../pages/PasswordChanged";
 import Reset from "../pages/Reset";
@@ -20,10 +21,12 @@ export default function AppRouter() {
     <Routes>
       {isAuth ? (
         <>
-          <Route path="/" element={<ToDoListPage />} />
+          <Route path="/boards" element={<Boards />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/resetEmail" element={<ResetEmail />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
+          <Route exact path="/boards/:id" element={<ToDoListPage />} />
+          <Route path="" element={<Navigate to="/boards" />} />
         </>
       ) : (
         <>

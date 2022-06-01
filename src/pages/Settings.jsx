@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { deleteUser } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
 import CustomModal from "../components/Modal";
-export default function Settings() {
+export default function Settings({ back }) {
   const navigate = useNavigate();
   const _user = useSelector((state) => state.user);
   const { user } = useAuth();
@@ -54,7 +54,7 @@ export default function Settings() {
       <Button
         sx={styles.buttonBack}
         onClick={() => {
-          navigate("../");
+          navigate(-1);
         }}
       >
         Back

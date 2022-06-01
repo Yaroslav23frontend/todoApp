@@ -7,35 +7,29 @@ import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
-import { addItem } from "../store/action";
+import { addBoard, addItem } from "../store/action";
 import * as yup from "yup";
 
-export default function AddItem({ docName }) {
+export default function AddBoard() {
   const user = useSelector((state) => state.user.id);
-  const data = useSelector((state) => state.items);
-  const { id, setId } = useAuth();
+  const data = useSelector((state) => state.boards);
+  console.log(data);
   const dispatch = useDispatch();
   const [count, setCount] = useState(0);
   async function addNewItem(data) {
     dispatch({
-      type: addItem,
-      payload: {
-        item: data.item,
-        id: id + 1,
-        dueDate: data.date,
-      },
+      type: addBoard,
+      payload: data.item,
     });
-    setId(id + 1);
   }
-  async function storeData(data) {
-    console.log(docName);
-    await updateDoc(doc(db, `${user}`, docName), {
-      [id]: data,
-    });
+  async function storeData() {
+    console.log(data);
+    await setDoc(doc(db, `${user}`, data[data.length - 1]), {});
+    await setDoc(doc(db, `${user}-boards`, "boards"), { boards: [...data] });
   }
   useEffect(() => {
     if (count !== 0) {
-      storeData(data[data.length - 1]);
+      storeData();
     }
   }, [count]);
   const styles = {
@@ -70,12 +64,10 @@ export default function AddItem({ docName }) {
         "The item should be less than 50 or equal to 50 characters in length"
       )
       .required("Item should be minimum 1 character length"),
-    date: yup.date("Enter your task").required("Please choose the date"),
   });
   const formik = useFormik({
     initialValues: {
       item: "",
-      date: "",
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -108,22 +100,10 @@ export default function AddItem({ docName }) {
           error={formik.touched.item && Boolean(formik.errors.item)}
           helperText={formik.touched.item && formik.errors.item}
         />
-        <Box sx={styles.dateAndButton}>
-          <TextField
-            type="date"
-            id="date"
-            name="date"
-            variant="standard"
-            value={formik.values.date}
-            onChange={formik.handleChange}
-            error={formik.touched.date && Boolean(formik.errors.date)}
-            helperText={formik.touched.date && formik.errors.date}
-          />
 
-          <Button variant="outlined" type="submit">
-            Add
-          </Button>
-        </Box>
+        <Button variant="outlined" type="submit">
+          Add
+        </Button>
       </Box>
     </form>
   );

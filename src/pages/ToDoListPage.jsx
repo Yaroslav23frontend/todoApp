@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { signOut } from "firebase/auth";
@@ -17,14 +17,27 @@ import CustomBox from "../components/CustomBox";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useNavigate } from "react-router-dom";
-export default function ToDoListPage() {
+import { useLocation, useNavigate } from "react-router-dom";
+import { getDocs, collection, getDoc, doc } from "firebase/firestore";
+import { useDispatch, useSelector } from "react-redux";
+import { db } from "../firebase/firebase";
+import { addItems } from "../store/action";
+export default function ToDoListPage({ match }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [valueNav, setValueNav] = useState("all");
   const [searchData, setSearchData] = useState("");
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("");
-
+  const id = useSelector((state) => state.user.id);
+  const { setId } = useAuth();
+  const location = useLocation();
+  function docName() {
+    const index = location.pathname.lastIndexOf("/");
+    const docName = location.pathname.substring(index + 1);
+    return docName;
+  }
+  const boardName = docName();
   async function logOut() {
     await signOut(auth)
       .then(() => {
@@ -40,15 +53,39 @@ export default function ToDoListPage() {
     setValueNav(index);
   }
   const { isVerified } = useAuth();
+  async function getData() {
+    const docSnap = await getDoc(doc(db, `${id}`, boardName));
+    const temp = [];
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      Object.values(docSnap.data()).map((el) => temp.push(el));
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
+
+    if (temp.length === 0) {
+      setId(0);
+    } else {
+      setId(temp[temp.length - 1].id);
+    }
+    dispatch({ type: addItems, payload: temp });
+  }
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <Paper sx={styles.paper}>
       <Box sx={styles.topNav}>
         <Button onClick={() => navigate("/settings")}>
           <SettingsIcon />
         </Button>
-        <Button sx={styles.buttonSignOut} onClick={logOut}>
-          Sign out
-        </Button>
+        <Box>
+          <Button onClick={() => navigate("../boards")}>Boards</Button>
+          <Button sx={styles.buttonSignOut} onClick={logOut}>
+            Sign out
+          </Button>
+        </Box>
       </Box>
 
       {isVerified ? (
@@ -130,7 +167,7 @@ export default function ToDoListPage() {
             />
           </CustomBox>
 
-          <AddItem />
+          <AddItem docName={boardName} />
         </>
       ) : (
         <Verified />

@@ -3,7 +3,7 @@ import { auth } from "../firebase/firebase";
 import { GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
 import { getDocs, collection, getDoc, doc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { addUser, settings } from "../store/action";
+import { addBoards, addUser, settings } from "../store/action";
 import { addItems } from "../store/action";
 import { db } from "../firebase/firebase";
 const AuthContext = React.createContext();
@@ -20,21 +20,17 @@ export default function AuthProivider({ children }) {
   const [user, setUser] = useState(null);
   const [id, setId] = useState();
   async function getData(id) {
-    const querySnapshot = await getDocs(collection(db, `${id}`)).catch((err) =>
-      console.log(err)
+    const docSnap = await getDoc(doc(db, `${id}-boards`, `boards`)).catch(
+      (err) => console.log(err)
     );
     const temp = [];
-    querySnapshot.forEach(async (doc) => {
-      temp.push(doc.data());
-    });
-    console.log(temp);
-    if (temp.length === 0) {
-      setId(0);
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      dispatch({ type: addBoards, payload: docSnap.data().boards });
     } else {
-      setId(temp[temp.length - 1].id);
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
     }
-
-    dispatch({ type: addItems, payload: temp });
   }
   async function getSettings(id) {
     console.log(`${id}-settings`);
