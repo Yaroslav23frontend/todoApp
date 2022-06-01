@@ -18,5 +18,5 @@ export default function Reset() {
         // ..
       });
   }
-  return <Forms reset={true} func={reset} />;
+  return <Forms reset={true} resetText={"Reset the password"} func={reset} />;
 }

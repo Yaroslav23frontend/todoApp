@@ -1,5 +1,5 @@
 import { settings, resetSettings } from "../action";
-const initialState = {
+export const initialState = {
   today: "yellow",
   overdue: "red",
   upcoming: "navy",

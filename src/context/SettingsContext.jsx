@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { auth } from "../firebase/firebase";
-import { GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
-import { getDocs, collection } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { settings } from "../store/action";
-import { addItems } from "../store/action";
 import { db } from "../firebase/firebase";
+import { useAuth } from "./AuthContext";
+import { doc, updateDoc } from "firebase/firestore";
+import { initialState } from "../store/reducers/reducerSettings";
 const SettingsContext = React.createContext();
 
 export function useSettings() {
@@ -14,59 +13,87 @@ export function useSettings() {
 export default function SettingsProivider({ children }) {
   const _settings = useSelector((state) => state.settings);
   const dispatch = useDispatch();
-  const [today, setToday] = useState(_settings.today);
-  const [overdue, setOverdue] = useState(_settings.overdue);
-  const [upcoming, setUpcoming] = useState(_settings.upcoming);
-  const [completed, setCompleted] = useState(_settings.completed);
-  const [upcomingDays, setUpcomingDays] = useState(_settings.upcomingDays);
-  const [them, setThem] = useState(_settings.them);
+  const { user } = useAuth();
+
   function _setToday(data) {
-    setToday(data);
-  }
-  function _setOverdue(data) {
-    setOverdue(data);
-  }
-  function _setUpcoming(data) {
-    setUpcoming(data);
-  }
-  function _setCompleted(data) {
-    setCompleted(data);
-  }
-  function _setUpcoming(data) {
-    setUpcoming(data);
-  }
-  function _setUpcomingDays(data) {
-    setUpcomingDays(data);
-  }
-  function _setThem(data) {
-    setThem(data);
-  }
-  useEffect(() => {
     dispatch({
       type: settings,
-      payload: {
-        today: today,
-        overdue: overdue,
-        upcoming: upcoming,
-        completed: completed,
-        upcomingDays: upcomingDays,
-        them: them,
-      },
+      payload: { ..._settings, today: data },
     });
-  }, [today, overdue, upcoming, completed, upcomingDays, them]);
+    updateItem("today", data);
+  }
+  function _setOverdue(data) {
+    dispatch({
+      type: settings,
+      payload: { ..._settings, overdue: data },
+    });
+    updateItem("overdue", data);
+  }
+  function _setUpcoming(data) {
+    dispatch({
+      type: settings,
+      payload: { ..._settings, upcoming: data },
+    });
+    updateItem("upcoming", data);
+  }
+  function _setCompleted(data) {
+    dispatch({
+      type: settings,
+      payload: { ..._settings, completed: data },
+    });
+    updateItem("completed", data);
+  }
+  function _setUpcoming(data) {
+    dispatch({
+      type: settings,
+      payload: { ..._settings, upcoming: data },
+    });
+    updateItem("upcoming", data);
+  }
+  function _setUpcomingDays(data) {
+    dispatch({
+      type: settings,
+      payload: { ..._settings, upcomingDays: data },
+    });
+    updateItem("upcomingDays", data);
+  }
+  function _setThem(data) {
+    dispatch({
+      type: settings,
+      payload: { ..._settings, them: data },
+    });
+    updateItem("them", data);
+  }
+  function _resetSettings() {
+    dispatch({
+      type: settings,
+      payload: initialState,
+    });
+    updateItem("", "", true);
+  }
+  async function updateItem(field, data, reset = false) {
+    await updateDoc(
+      doc(db, `${user.uid}-settings`, `settings`),
+      reset
+        ? initialState
+        : {
+            [field]: data,
+          }
+    );
+  }
+
   const value = {
-    today,
     _setToday,
-    overdue,
+
     _setOverdue,
-    upcoming,
+
     _setUpcoming,
-    completed,
+
     _setCompleted,
-    upcomingDays,
+
     _setUpcomingDays,
-    them,
     _setThem,
+    _resetSettings,
   };
   return (
     <SettingsContext.Provider value={value}>

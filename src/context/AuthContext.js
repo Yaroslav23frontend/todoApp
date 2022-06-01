@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { auth } from "../firebase/firebase";
 import { GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, getDoc, doc } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { addUser } from "../store/action";
+import { addUser, settings } from "../store/action";
 import { addItems } from "../store/action";
 import { db } from "../firebase/firebase";
 const AuthContext = React.createContext();
@@ -36,6 +36,19 @@ export default function AuthProivider({ children }) {
 
     dispatch({ type: addItems, payload: temp });
   }
+  async function getSettings(id) {
+    console.log(`${id}-settings`);
+    const docSnap = await getDoc(doc(db, `${id}-settings`, "settings")).catch(
+      (err) => console.log(err)
+    );
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      dispatch({ type: settings, payload: docSnap.data() });
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       console.log(user);
@@ -49,10 +62,12 @@ export default function AuthProivider({ children }) {
           emailVerified: user?.emailVerified,
         },
       });
+
       setIsAuth(!!user?.email);
       setLoading(false);
       setIsVerified(user?.emailVerified);
       setUser(user);
+      getSettings(user?.uid);
       getData(user?.uid);
     });
 

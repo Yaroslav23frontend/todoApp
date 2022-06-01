@@ -6,14 +6,22 @@ import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 export default function SignUp() {
   const navigate = useNavigate();
+  const settings = useSelector((state) => state.settings);
   function signUp(email, password) {
     createUserWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         // Signed in
         await sendEmailVerification(userCredential.user);
+        await setDoc(
+          doc(db, `${userCredential.user.uid}-settings`, `settings`),
+          settings
+        );
         console.log(userCredential);
         navigate("../");
         // ...

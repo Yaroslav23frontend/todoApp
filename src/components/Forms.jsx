@@ -44,47 +44,25 @@ const validationSchemaReset = yup.object({
     .email("Enter a valid email")
     .required("Email is required"),
 });
-const styles = {
-  title: {
-    textAlign: "center",
-    marginBottom: "20px",
-    marginTop: "25px",
-  },
-
-  paper: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    padding: "20px",
-    minWidth: "360px",
-  },
-  inputBox: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "20px",
-    height: "100%",
-  },
-  button: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  icon: {
-    marginRight: "10px",
-  },
-  linksBox: {
-    display: "flex",
-    alignItems: "center",
-    gap: "20px",
-  },
-  link: {
-    display: "flex",
-    width: "150px",
-  },
-};
-export default function Forms({ signUp, reset, func }) {
+const validationSchemaResetPassword = yup.object({
+  password: yup
+    .string("Enter your password")
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required"),
+  confirmationPassword: yup
+    .string("Enter your password")
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required")
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
+});
+export default function Forms({
+  signUp,
+  reset,
+  func,
+  resetText,
+  resetEmail,
+  resetPassword,
+}) {
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   function signInWithGoogle() {
@@ -128,6 +106,16 @@ export default function Forms({ signUp, reset, func }) {
     onSubmit: (values) => {
       func(values.email, values.password);
       alert(JSON.stringify(values, null, 2));
+    },
+  });
+  const formikResetPassword = useFormik({
+    initialValues: {
+      password: "",
+      confirmationPassword: "",
+    },
+    validationSchema: validationSchemaResetPassword,
+    onSubmit: (values) => {
+      func(values.password);
     },
   });
   if (signUp) {
@@ -205,7 +193,7 @@ export default function Forms({ signUp, reset, func }) {
         <Header />
         <form onSubmit={formikReset.handleSubmit}>
           <Typography variant="h3" component="h1" sx={styles.title}>
-            Reset the password
+            {resetText}
           </Typography>
           <Box sx={styles.inputBox}>
             <TextField
@@ -223,11 +211,68 @@ export default function Forms({ signUp, reset, func }) {
             <Button color="primary" variant="contained" fullWidth type="submit">
               Submit
             </Button>
-            <Box sx={styles.linksBox}>
-              <Link href="/signup">Sign up</Link>
-              <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-              <Link href="/">Sign in</Link>
-            </Box>
+            <Button onClick={() => navigate("../settings")}>Back</Button>
+            {resetEmail ? (
+              <></>
+            ) : (
+              <Box sx={styles.linksBox}>
+                <Link href="/signup">Sign up</Link>
+                <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+                <Link href="/">Sign in</Link>
+              </Box>
+            )}
+          </Box>
+        </form>
+      </Paper>
+    );
+  }
+  if (resetPassword) {
+    return (
+      <Paper sx={styles.paper}>
+        <Header />
+        <form onSubmit={formikResetPassword.handleSubmit}>
+          <Typography variant="h3" component="h1" sx={styles.title}>
+            Reset password
+          </Typography>
+          <Box sx={styles.inputBox}>
+            <TextField
+              fullWidth
+              id="password"
+              name="password"
+              label="password"
+              type="password"
+              value={formikResetPassword.values.password}
+              onChange={formikResetPassword.handleChange}
+              error={
+                formikResetPassword.touched.password &&
+                Boolean(formikResetPassword.errors.password)
+              }
+              helperText={
+                formikResetPassword.touched.password &&
+                formikResetPassword.errors.password
+              }
+            />
+            <TextField
+              fullWidth
+              id="confirmationPassword"
+              name="confirmationPassword"
+              label="Confirmation Password"
+              type="password"
+              value={formikResetPassword.values.confirmationPassword}
+              onChange={formikResetPassword.handleChange}
+              error={
+                formikResetPassword.touched.confirmationPassword &&
+                Boolean(formikResetPassword.errors.confirmationPassword)
+              }
+              helperText={
+                formikResetPassword.touched.confirmationPassword &&
+                formikResetPassword.errors.confirmationPassword
+              }
+            />
+            <Button color="primary" variant="contained" fullWidth type="submit">
+              Submit
+            </Button>
+            <Button onClick={() => navigate("../settings")}>Back</Button>
           </Box>
         </form>
       </Paper>
@@ -278,7 +323,6 @@ export default function Forms({ signUp, reset, func }) {
             color="primary"
             variant="contained"
             fullWidth
-            type="submit"
             onClick={signInWithGoogle}
           >
             <GoogleIcon sx={styles.icon}></GoogleIcon>
@@ -304,3 +348,43 @@ export default function Forms({ signUp, reset, func }) {
     </Paper>
   );
 }
+const styles = {
+  title: {
+    textAlign: "center",
+    marginBottom: "20px",
+    marginTop: "25px",
+  },
+
+  paper: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    padding: "20px",
+    minWidth: "360px",
+  },
+  inputBox: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "20px",
+    height: "100%",
+  },
+  button: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    marginRight: "10px",
+  },
+  linksBox: {
+    display: "flex",
+    alignItems: "center",
+    gap: "20px",
+  },
+  link: {
+    display: "flex",
+    width: "150px",
+  },
+};

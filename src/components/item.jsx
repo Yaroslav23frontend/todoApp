@@ -11,6 +11,7 @@ import { completedItem } from "../store/action";
 export default function Item({ data, id }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.id);
+  const settings = useSelector((state) => state.settings);
   const [color, setColor] = useState(dateColor());
   async function delItem() {
     dispatch({ type: deleteItem, payload: id });
@@ -40,7 +41,7 @@ export default function Item({ data, id }) {
       textDecoration: data.completed ? "line-through" : "none",
     },
     cicle: {
-      backgroundColor: data.completed ? "gray" : color,
+      backgroundColor: data.completed ? settings.completed : color,
       borderRadius: "50%",
       width: "20px",
       height: "20px",
@@ -53,16 +54,16 @@ export default function Item({ data, id }) {
   };
   function dateColor() {
     if (data.days === 0) {
-      return "yellow";
+      return settings.today;
     }
     if (data.days < 0) {
-      return "red";
+      return settings.overdue;
     }
-    if (data.days >= 1 && data.days <= 5) {
-      return "blue";
+    if (data.days >= 1 && data.days <= settings.upcomingDays) {
+      return settings.upcoming;
     }
 
-    return "black";
+    return "";
   }
   return (
     <Box sx={styles.box}>

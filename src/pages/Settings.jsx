@@ -10,23 +10,45 @@ import SettingsItemsColors from "../components/SettingsItemsColors";
 import Paper from "@mui/material/Paper";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { deleteUser } from "firebase/auth";
+import { useAuth } from "../context/AuthContext";
+import CustomModal from "../components/Modal";
 export default function Settings() {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
+  const _user = useSelector((state) => state.user);
+  const { user } = useAuth();
+  const [modal, setModal] = useState(false);
+  const [result, setResult] = useState("");
+  const settings = useSelector((state) => state.settings);
   const {
-    today,
     _setToday,
-    overdue,
     _setOverdue,
-    upcoming,
     _setUpcoming,
-    completed,
     _setCompleted,
-    upcomingDays,
     _setUpcomingDays,
-    them,
     _setThem,
+    _resetSettings,
   } = useSettings();
+  function deleteAccount() {
+    deleteUser(user)
+      .then(() => {
+        // User deleted.
+        setModal(false);
+        navigate("../userDeleted");
+      })
+      .catch((error) => {
+        // An error ocurred
+        // ...
+        setResult(error);
+        setModal(true);
+        setTimeout(() => {
+          setModal(false);
+        }, 1000);
+      });
+  }
+  function modalClose() {
+    setModal(false);
+  }
   return (
     <Paper sx={styles.paper}>
       <Button
@@ -44,21 +66,28 @@ export default function Settings() {
 
         <Box sx={styles.box}>
           <Box sx={styles.boxDays}>
-            <Typography>{user.email}</Typography>
-            <Button>Change</Button>
+            <Typography>{_user.email}</Typography>
+            <Button onClick={() => navigate("/resetEmail")}>Change</Button>
           </Box>
           <Box sx={styles.boxDays}>
             <Typography>Password</Typography>
-            <Button>Change</Button>
+            <Button onClick={() => navigate("/resetPassword")}>Change</Button>
           </Box>
           <Box sx={styles.boxDays}>
             <Typography>Delete acount</Typography>
-            <Button>Delete</Button>
+            <Button onClick={() => setModal(true)}>Delete</Button>
           </Box>
           <Box sx={styles.boxDays}>
             <Typography>Delete all data</Typography>
             <Button>Delete</Button>
           </Box>
+          <CustomModal
+            handleCancele={modalClose}
+            handleConfirm={deleteAccount}
+            open={modal}
+            massege={"Do you want to delete this account?"}
+            result={result}
+          />
         </Box>
         <Typography sx={styles.title} variant="h4" component="h1">
           Colors
@@ -66,25 +95,25 @@ export default function Settings() {
         <SettingsItemsColors
           label="color"
           id="Today"
-          value={today}
+          value={settings.today}
           setValue={_setToday}
         />
         <SettingsItemsColors
           label="color"
           id="Overdue"
-          value={overdue}
+          value={settings.overdue}
           setValue={_setOverdue}
         />
         <SettingsItemsColors
           label="color"
           id="Upcoming"
-          value={upcoming}
+          value={settings.upcoming}
           setValue={_setUpcoming}
         />
         <SettingsItemsColors
           label="color"
           id="Completed"
-          value={completed}
+          value={settings.completed}
           setValue={_setCompleted}
         />
         <Box sx={styles.boxDays}>
@@ -92,12 +121,13 @@ export default function Settings() {
           <TextField
             sx={styles.textField}
             name="Upcoming(days)"
-            value={upcomingDays}
+            value={settings.upcomingDays}
             onChange={(e) => _setUpcomingDays(e.target.value)}
             variant="standard"
             type="number"
           />
         </Box>
+        <Button onClick={_resetSettings}>Reset</Button>
       </Box>
     </Paper>
   );
