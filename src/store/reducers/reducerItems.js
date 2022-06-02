@@ -1,4 +1,10 @@
-import { addItem, deleteItem, addItems, completedItem } from "../action";
+import {
+  addItem,
+  deleteItem,
+  addItems,
+  completedItem,
+  editItem,
+} from "../action";
 
 export function reducerItems(state = [], action) {
   switch (action.type) {
@@ -11,9 +17,13 @@ export function reducerItems(state = [], action) {
           completed: false,
           dueDate: dateFormat(action.payload.dueDate),
           days: numberOfDays(action.payload.dueDate),
+          date: action.payload.dueDate,
         },
       ];
     case addItems:
+      if (action.payload === undefined) {
+        return [];
+      }
       return [...action.payload];
     case completedItem:
       const data = JSON.parse(JSON.stringify(state));
@@ -26,8 +36,22 @@ export function reducerItems(state = [], action) {
           return el;
         }),
       ];
+    case editItem:
+      const newState = JSON.parse(JSON.stringify(state));
+      console.log(newState);
+      newState[action.payload.listId] = {
+        id: newState[action.payload.listId].id,
+        completed: newState[action.payload.listId].completed,
+        item: action.payload.item.item,
+        dueDate: dateFormat(action.payload.item.dueDate),
+        days: numberOfDays(action.payload.item.dueDate),
+        date: action.payload.item.dueDate,
+      };
+      console.log(newState);
+      return newState;
     case deleteItem:
       return [...state.filter((el) => el.id !== action.payload)];
+
     default:
       return state;
   }
@@ -46,7 +70,7 @@ function getDayOfYear(date = new Date()) {
 
   return differenceInDays;
 }
-function numberOfDays(_date) {
+export function numberOfDays(_date) {
   const date = new Date();
   const dueDate = new Date(_date);
   const numberOfDayCurrent = getDayOfYear(date);
@@ -66,7 +90,7 @@ function numberOfDays(_date) {
   }
   return "";
 }
-function dateFormat(date) {
+export function dateFormat(date) {
   const tempDate = new Date(date);
   const dateObject = {
     month: tempDate.getMonth(),

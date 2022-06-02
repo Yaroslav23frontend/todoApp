@@ -22,6 +22,7 @@ import { getDocs, collection, getDoc, doc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../firebase/firebase";
 import { addItems } from "../store/action";
+import CircularProgress from "@mui/material/CircularProgress";
 export default function ToDoListPage({ match }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ export default function ToDoListPage({ match }) {
   const [searchData, setSearchData] = useState("");
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("");
+  const [loading, setLoading] = useState(true);
   const id = useSelector((state) => state.user.id);
   const { setId } = useAuth();
   const location = useLocation();
@@ -42,6 +44,7 @@ export default function ToDoListPage({ match }) {
     await signOut(auth)
       .then(() => {
         console.log("Sign-out successful.");
+        navigate("../");
       })
       .catch((error) => {
         console.log(error);
@@ -56,9 +59,12 @@ export default function ToDoListPage({ match }) {
   async function getData() {
     const docSnap = await getDoc(doc(db, `${id}`, boardName));
     const temp = [];
+    let loading = true;
     if (docSnap.exists()) {
       console.log("Document data:", docSnap.data());
       Object.values(docSnap.data()).map((el) => temp.push(el));
+      loading = false;
+      setLoading(false);
     } else {
       // doc.data() will be undefined in this case
       console.log("No such document!");
@@ -74,6 +80,7 @@ export default function ToDoListPage({ match }) {
   useEffect(() => {
     getData();
   }, []);
+
   return (
     <Paper sx={styles.paper}>
       <Box sx={styles.topNav}>
@@ -98,6 +105,14 @@ export default function ToDoListPage({ match }) {
             value={searchData}
             onChange={(e) => {
               setSearchData(e.target.value);
+            }}
+            InputProps={{
+              endAdornment:
+                searchData !== "" ? (
+                  <Button onClick={() => setSearchData("")}>Clear</Button>
+                ) : (
+                  ""
+                ),
             }}
           />
           <Tabs
@@ -156,6 +171,9 @@ export default function ToDoListPage({ match }) {
               </Select>
             </FormControl>
           </Box>
+          <Box sx={styles.progress}>
+            {loading ? <CircularProgress /> : <></>}
+          </Box>
           <CustomBox>
             <Items
               filter={valueNav !== "all" ? true : false}
@@ -164,9 +182,10 @@ export default function ToDoListPage({ match }) {
               search={searchData !== "" ? true : false}
               filterDate={filter}
               sort={sort}
+              boardName={boardName}
+              loading={loading}
             />
           </CustomBox>
-
           <AddItem docName={boardName} />
         </>
       ) : (
@@ -260,5 +279,11 @@ const styles = {
     alignSelf: "flex-start",
     minWidth: 120,
     marginLeft: 5.5,
+  },
+  progress: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
   },
 };

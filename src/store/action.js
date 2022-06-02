@@ -9,3 +9,4 @@ export const resetSettings = "RESET_SETTINGS";
 export const addBoard = "ADD_BOARD";
 export const addBoards = "ADD_BOARDS";
 export const deleteBoard = "DELETE_BOARDS";
+export const editItem = "EDIT_ITEM";

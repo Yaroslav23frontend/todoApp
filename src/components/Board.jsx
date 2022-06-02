@@ -4,14 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import { db } from "../firebase/firebase";
-import {
-  deleteDoc,
-  doc,
-  updateDoc,
-  deleteField,
-  setDoc,
-  getDoc,
-} from "firebase/firestore";
+import { deleteDoc, doc, setDoc, getDoc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { addBoards, deleteBoard, deleteItem } from "../store/action";
 import { completedItem } from "../store/action";
@@ -24,15 +17,20 @@ export default function Board({ data }) {
   const boards = useSelector((state) => state.boards);
   const items = useSelector((state) => state.items);
   const [modal, setModal] = useState(false);
+  const [delModal, setDelModal] = useState(false);
   const id = useSelector((state) => state.user.id);
   async function delItem() {
     dispatch({ type: deleteBoard, payload: data });
+    await deleteDoc(doc(db, user, data));
     await setDoc(doc(db, `${user}-boards`, `boards`), {
-      boards: [...boards, data],
+      boards: [...boards.filter((el) => el !== data)],
     });
   }
   function closeModal() {
     setModal(false);
+  }
+  function closeDelModal() {
+    setDelModal(false);
   }
   async function renameBoard(docName) {
     const result = [...boards.filter((el) => el !== data), docName];
@@ -69,22 +67,30 @@ export default function Board({ data }) {
   };
 
   return (
-    <Box sx={styles.box}>
-      <Button onClick={() => navigate(`../boards/${data}`)}>{data}</Button>
-
-      <Box>
-        <Button onClick={delItem}>Delete</Button>
+    <>
+      <Box sx={styles.box}>
+        <Button onClick={() => navigate(`../boards/${data}`)} color="inherit">
+          {data}
+        </Button>
+        <Box>
+          <Button onClick={() => setDelModal(true)}>Delete</Button>
+          <Button onClick={() => setModal(true)}>Rename</Button>
+        </Box>
       </Box>
-      <Box>
-        <Button onClick={() => setModal(true)}>Rename</Button>
-        <CustomModal
-          handleCancele={closeModal}
-          handleConfirm={renameBoard}
-          open={modal}
-          boardName={data}
-          editBoardName={true}
-        />
-      </Box>
-    </Box>
+      <CustomModal
+        handleCancele={closeModal}
+        handleConfirm={renameBoard}
+        open={modal}
+        boardName={data}
+        editBoardName={true}
+      />
+      <CustomModal
+        handleCancele={closeDelModal}
+        handleConfirm={delItem}
+        open={delModal}
+        boardName={data}
+        massege={"Do you want delete this board?"}
+      />
+    </>
   );
 }

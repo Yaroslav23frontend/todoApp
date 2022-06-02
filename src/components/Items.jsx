@@ -9,6 +9,8 @@ export default function Items({
   searchData,
   filterDate,
   sort,
+  boardName,
+  loading,
 }) {
   const styles = {
     formGroup: {
@@ -68,19 +70,30 @@ export default function Items({
     }
     return filteredData;
   }, [filterDate, filteredData]);
-  return (
-    <FormGroup sx={styles.formGroup}>
-      {data.length === 0 ? (
-        <Typography sx={styles.text} variant="h6" component="h2">
-          You don't have any tasks yet
-        </Typography>
-      ) : (
-        <>
-          {filterdByDate?.map((el) => {
-            return <Item key={el.id} data={el} id={el.id} />;
-          })}
-        </>
-      )}
-    </FormGroup>
-  );
+  if (loading === false) {
+    return (
+      <FormGroup sx={styles.formGroup}>
+        {data.length === 0 ? (
+          <Typography sx={styles.text} variant="h6" component="h2">
+            You don't have any tasks yet
+          </Typography>
+        ) : (
+          <>
+            {filterdByDate?.map((el, id) => {
+              return (
+                <Item
+                  key={el.id}
+                  data={el}
+                  id={el.id}
+                  listId={id}
+                  boardName={boardName}
+                />
+              );
+            })}
+          </>
+        )}
+      </FormGroup>
+    );
+  }
+  return <></>;
 }

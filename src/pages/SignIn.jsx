@@ -1,9 +1,10 @@
 import { Container } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Forms from "../components/Forms";
 import { auth } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 export default function SignIn() {
+  const [error, setError] = useState("");
   function signIn(email, password) {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -12,8 +13,11 @@ export default function SignIn() {
         // ...
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        if (error.message.includes("user")) {
+          setError("User not found");
+        } else if (error.message.includes("password")) {
+          setError("Wrong password");
+        }
       });
   }
   return (
@@ -27,7 +31,7 @@ export default function SignIn() {
         width: "100%",
       }}
     >
-      <Forms func={signIn}></Forms>
+      <Forms func={signIn} error={error}></Forms>
     </Container>
   );
 }

@@ -1,0 +1,109 @@
+{
+  "main_nav": {
+    "all": "Moje CV",
+    "lan": "Język",
+    "sign_out": "Wyloguj",
+    "sign_in": "Zaloguj sie"
+  },
+  "landing": {
+    "header_section": {
+      "title": "Utwórz CV, aby dostać następną pracę",
+      "text": "W kilka minut zwiększ swoje szanse na znalezienie pracy o 70%. Utwórz i prześlij swoje profesjonalne CV."
+    },
+    "subscribe_section": {
+      "title": {
+        "h2": "Subskrybuj CV Builder",
+        "span": "Zdobądź pracę swoich marzeń dzięki CV Builder"
+      },
+      "ul": {
+        "title": "Z CV Builder możesz:",
+        "items": [
+          "Stwórz własne profesjonalne CV w kilka minut za pomocą naszych narzędzi.",
+          "Zachowaj swoje CV na swoim koncie osobistym i edytuj je w dowolnym momencie.",
+          "Pobierz własne CV."
+        ]
+      }
+    },
+    "buttons": {
+      "create": "Stwórz CV",
+      "subscribe": "Subskrybuj"
+    }
+  },
+  "nav_bar": {
+    "nav_bar_personal": "Osobowe",
+    "nav_bar_exp": "Doświadczenie",
+    "nav_bar_preview": "Szablon"
+  },
+  "cv": {
+    "personal": "DANE OSOBISTE",
+    "exp": "DOŚWIADCZENIE",
+    "study": "WYKSZTAŁCENIE I DYPLOMY / CERTYFIKATY",
+    "skills": "NAWYKI",
+    "lan": "JĘZYKI"
+  },
+  "personal": {
+    "personal": "Dane osobiste",
+    "additional": "Dodatkowe informacje",
+    "basic": "Podstawowe informacje",
+    "name": "Imie*",
+    "lastName": "Nazwisko*",
+    "tel": "Numer telefonu*",
+    "address": "Adres",
+    "zip": "Kod pocztowy",
+    "city": "Miasto"
+  },
+  "exp_section": {
+    "experience": "Doświadczenie",
+    "profile": {
+      "profile": "Profil",
+      "description": "Opis"
+    }
+  },
+  "work_exp_section": {
+    "h": "Doświadczenie",
+    "title": "Pozycja",
+    "city": "Miastо",
+    "company": "Spółka",
+    "start_date": "Data rozpoczęcia",
+    "end_date": "Data zakończenia",
+    "description": "Opis"
+  },
+  "study_section": {
+    "h": "Wykształcenie i dyplomy/certyfikaty",
+    "studies": "Specjalność",
+    "location": "Miasto",
+    "insitution": "Szkoła",
+    "start_date": "Data rozpoczęcia",
+    "end_date": "Data zakończenia",
+    "description": "Opis"
+  },
+  "skills": "Nawyki",
+
+  "languages_section": {
+    "h": "Języki",
+    "en": "Angielski",
+    "pl": "Polski",
+    "sp": "Hiszpański",
+    "ru": "Rosyjski",
+    "ukr": "Ukraiński",
+    "fr": "Francuski",
+    "por": "Portugalski",
+    "ger": "Niemiecki",
+    "it": "Włoski",
+    "native": "Ojczysty",
+    "pre": "Poniżej średniego",
+    "inter": "Średni",
+    "upper": "Powyżej średniego",
+    "adv": "Zaawansowany",
+    "pro": "Profesjonalny",
+    "basic": "Podstawowy"
+  },
+  "buttons": {
+    "add": "Dodać",
+    "save": "Zapisać",
+    "cancel": "Anulowaćи",
+    "next": "Dalej",
+    "delete": "Usunąć",
+    "edit": "Edytować"
+  }
+}

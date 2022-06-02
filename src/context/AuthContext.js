@@ -27,6 +27,8 @@ export default function AuthProivider({ children }) {
     if (docSnap.exists()) {
       console.log("Document data:", docSnap.data());
       dispatch({ type: addBoards, payload: docSnap.data().boards });
+      console.log("loading");
+      setLoading(false);
     } else {
       // doc.data() will be undefined in this case
       console.log("No such document!");
@@ -60,7 +62,6 @@ export default function AuthProivider({ children }) {
       });
 
       setIsAuth(!!user?.email);
-      setLoading(false);
       setIsVerified(user?.emailVerified);
       setUser(user);
       getSettings(user?.uid);
@@ -77,9 +78,5 @@ export default function AuthProivider({ children }) {
     id,
     setId,
   };
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

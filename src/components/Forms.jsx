@@ -62,6 +62,7 @@ export default function Forms({
   resetText,
   resetEmail,
   resetPassword,
+  error,
 }) {
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
@@ -298,6 +299,11 @@ export default function Forms({
             }
             helperText={formikSignIn.touched.email && formikSignIn.errors.email}
           />
+          {error.includes("User") ? (
+            <Typography sx={styles.error}>{error}</Typography>
+          ) : (
+            <></>
+          )}
           <TextField
             fullWidth
             id="password"
@@ -314,7 +320,11 @@ export default function Forms({
               formikSignIn.touched.password && formikSignIn.errors.password
             }
           />
-
+          {error.includes("password") ? (
+            <Typography sx={styles.error}>{error}</Typography>
+          ) : (
+            <></>
+          )}
           <Button color="primary" variant="contained" fullWidth type="submit">
             Submit
           </Button>
@@ -386,5 +396,12 @@ const styles = {
   link: {
     display: "flex",
     width: "150px",
+  },
+  error: {
+    fontSize: "12px",
+    color: "red",
+    marginTop: "-15px",
+    marginLeft: "15px",
+    alignSelf: "flex-start",
   },
 };

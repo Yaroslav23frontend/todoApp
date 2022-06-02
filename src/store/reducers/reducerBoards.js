@@ -5,6 +5,9 @@ export function reducerBoards(state = [], action) {
     case addBoard:
       return [...state, action.payload];
     case addBoards:
+      if (action.payload === undefined) {
+        return [];
+      }
       return [...action.payload];
 
     case deleteBoard:

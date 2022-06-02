@@ -13,12 +13,18 @@ import { useNavigate } from "react-router-dom";
 import { deleteUser } from "firebase/auth";
 import { useAuth } from "../context/AuthContext";
 import CustomModal from "../components/Modal";
+import { doc, deleteDoc, setDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase";
+import { addBoards, addItems } from "../store/action";
 export default function Settings({ back }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const _user = useSelector((state) => state.user);
   const { user } = useAuth();
   const [modal, setModal] = useState(false);
+  const [modalDeleteAll, setModalDeleteAll] = useState(false);
   const [result, setResult] = useState("");
+  const data = useSelector((state) => state.boards);
   const settings = useSelector((state) => state.settings);
   const {
     _setToday,
@@ -48,6 +54,16 @@ export default function Settings({ back }) {
   }
   function modalClose() {
     setModal(false);
+  }
+  function modalDeleteAllClose() {
+    setModalDeleteAll(false);
+  }
+  function delAll() {
+    dispatch({ type: addItems, payload: [] });
+    dispatch({ type: addBoards, payload: [] });
+    setDoc(doc(db, `${_user.id}-boards`, "boards"), {});
+    data.forEach(async (el) => await deleteDoc(doc(db, `${_user.id}`, el)));
+    modalDeleteAllClose();
   }
   return (
     <Paper sx={styles.paper}>
@@ -79,7 +95,7 @@ export default function Settings({ back }) {
           </Box>
           <Box sx={styles.boxDays}>
             <Typography>Delete all data</Typography>
-            <Button>Delete</Button>
+            <Button onClick={() => setModalDeleteAll(true)}>Delete</Button>
           </Box>
           <CustomModal
             handleCancele={modalClose}
@@ -87,6 +103,12 @@ export default function Settings({ back }) {
             open={modal}
             massege={"Do you want to delete this account?"}
             result={result}
+          />
+          <CustomModal
+            handleCancele={modalDeleteAllClose}
+            handleConfirm={delAll}
+            open={modalDeleteAll}
+            massege={"Do you want to delete all data?"}
           />
         </Box>
         <Typography sx={styles.title} variant="h4" component="h1">

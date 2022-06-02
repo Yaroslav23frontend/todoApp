@@ -93,7 +93,7 @@ export default function AddBoard() {
           sx={styles.inputAddItem}
           id="item"
           name="item"
-          label="New item"
+          label="Add new board"
           variant="standard"
           value={formik.values.item}
           onChange={formik.handleChange}

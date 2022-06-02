@@ -22,14 +22,17 @@ import { useSelector } from "react-redux";
 import AddBoard from "../components/AddBoard";
 import Board from "../components/Board";
 import CustomModal from "../components/Modal";
+import CircularProgress from "@mui/material/CircularProgress";
 export default function Boards() {
   const navigate = useNavigate();
   const [searchData, setSearchData] = useState("");
   const boards = useSelector((state) => state.boards);
+  const { loading } = useAuth();
   async function logOut() {
     await signOut(auth)
       .then(() => {
         console.log("Sign-out successful.");
+        navigate("../");
       })
       .catch((error) => {
         console.log(error);
@@ -64,14 +67,33 @@ export default function Boards() {
             onChange={(e) => {
               setSearchData(e.target.value);
             }}
+            InputProps={{
+              endAdornment:
+                searchData !== "" ? (
+                  <Button onClick={() => setSearchData("")}>Clear</Button>
+                ) : (
+                  ""
+                ),
+            }}
           />
+
+          <Box sx={styles.progress}>
+            {loading ? <CircularProgress /> : <></>}
+          </Box>
 
           <CustomBox>
             {data.map((el) => {
               return <Board key={el} data={el} />;
             })}
+            {data.length === 0 ? (
+              <Typography sx={styles.text} variant="h6" component="h2">
+                You don't have any boards yet
+              </Typography>
+            ) : (
+              <></>
+            )}
           </CustomBox>
-          {/* <CustomModal open={true} /> */}
+
           <AddBoard />
         </>
       ) : (
@@ -165,5 +187,17 @@ const styles = {
     alignSelf: "flex-start",
     minWidth: 120,
     marginLeft: 5.5,
+  },
+  progress: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  },
+  text: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
   },
 };
