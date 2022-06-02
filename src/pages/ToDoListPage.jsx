@@ -31,6 +31,7 @@ export default function ToDoListPage({ match }) {
   const [filter, setFilter] = useState("");
   const [sort, setSort] = useState("");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const id = useSelector((state) => state.user.id);
   const { setId } = useAuth();
   const location = useLocation();
@@ -57,7 +58,10 @@ export default function ToDoListPage({ match }) {
   }
   const { isVerified } = useAuth();
   async function getData() {
-    const docSnap = await getDoc(doc(db, `${id}`, boardName));
+    const docSnap = await getDoc(doc(db, `${id}`, boardName)).catch((error) => {
+      setError(error.message);
+      setLoading(false);
+    });
     const temp = [];
     let loading = true;
     if (docSnap.exists()) {
@@ -80,7 +84,6 @@ export default function ToDoListPage({ match }) {
   useEffect(() => {
     getData();
   }, []);
-
   return (
     <Paper sx={styles.paper}>
       <Box sx={styles.topNav}>
@@ -174,6 +177,7 @@ export default function ToDoListPage({ match }) {
           <Box sx={styles.progress}>
             {loading ? <CircularProgress /> : <></>}
           </Box>
+
           <CustomBox>
             <Items
               filter={valueNav !== "all" ? true : false}
@@ -184,6 +188,7 @@ export default function ToDoListPage({ match }) {
               sort={sort}
               boardName={boardName}
               loading={loading}
+              error={error}
             />
           </CustomBox>
           <AddItem docName={boardName} />

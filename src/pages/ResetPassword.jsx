@@ -10,6 +10,7 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const [changed, setChanged] = useState("");
   const { user } = useAuth();
+  const [error, setError] = useState("");
   async function logOut() {
     await signOut(auth)
       .then(() => {
@@ -28,6 +29,7 @@ export default function ResetPassword() {
       })
       .catch((error) => {
         setChanged(error);
+        setError(error.message);
       });
   }
   if (changed !== "" && changed !== true) {
@@ -38,7 +40,7 @@ export default function ResetPassword() {
       <Button onClick={() => navigate("../settings")}>Back</Button>
     </Paper>;
   }
-  return <Forms resetPassword={true} func={reset} />;
+  return <Forms resetPassword={true} func={reset} error={error} />;
 }
 const styles = {
   paper: {

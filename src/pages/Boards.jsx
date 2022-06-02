@@ -78,20 +78,25 @@ export default function Boards() {
           />
 
           <Box sx={styles.progress}>
-            {loading ? <CircularProgress /> : <></>}
+            {loading ? (
+              <CircularProgress />
+            ) : (
+              <>
+                {data.length === 0 ? (
+                  <Typography sx={styles.text} variant="h6" component="h2">
+                    You don't have any boards yet
+                  </Typography>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
           </Box>
 
           <CustomBox>
             {data.map((el) => {
               return <Board key={el} data={el} />;
             })}
-            {data.length === 0 ? (
-              <Typography sx={styles.text} variant="h6" component="h2">
-                You don't have any boards yet
-              </Typography>
-            ) : (
-              <></>
-            )}
           </CustomBox>
 
           <AddBoard />
@@ -195,9 +200,6 @@ const styles = {
     transform: "translate(-50%, -50%)",
   },
   text: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    width: "100%",
   },
 };

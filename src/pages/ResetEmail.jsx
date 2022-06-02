@@ -14,6 +14,7 @@ export default function ResetEmail() {
   const dispatch = useDispatch();
   const { user } = useAuth();
   const userInfo = useSelector((state) => state.user);
+  const [error, setError] = useState();
   async function logOut() {
     await signOut(auth)
       .then(() => {
@@ -22,6 +23,7 @@ export default function ResetEmail() {
       })
       .catch((error) => {
         console.log(error);
+        setError(error.message);
       });
   }
   function reset(email) {
@@ -57,6 +59,7 @@ export default function ResetEmail() {
       resetEmail={true}
       resetText={"Change email"}
       func={reset}
+      error={error}
     />
   );
 }

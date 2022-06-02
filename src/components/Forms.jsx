@@ -166,6 +166,7 @@ export default function Forms({
                 formik.errors.confirmationPassword
               }
             />
+            <Typography sx={styles.error}>{error}</Typography>
             <Button color="primary" variant="contained" fullWidth type="submit">
               Submit
             </Button>
@@ -209,10 +210,11 @@ export default function Forms({
               }
               helperText={formikReset.touched.email && formikReset.errors.email}
             />
+            <Typography sx={styles.error}>{error}</Typography>
             <Button color="primary" variant="contained" fullWidth type="submit">
               Submit
             </Button>
-            <Button onClick={() => navigate("../settings")}>Back</Button>
+            <Button onClick={() => navigate(-1)}>Back</Button>
             {resetEmail ? (
               <></>
             ) : (
@@ -270,6 +272,7 @@ export default function Forms({
                 formikResetPassword.errors.confirmationPassword
               }
             />
+            <Typography sx={styles.error}>{error}</Typography>
             <Button color="primary" variant="contained" fullWidth type="submit">
               Submit
             </Button>
@@ -324,6 +327,11 @@ export default function Forms({
             <Typography sx={styles.error}>{error}</Typography>
           ) : (
             <></>
+          )}
+          {error.includes("password") || error.includes("User") ? (
+            <></>
+          ) : (
+            <Typography sx={styles.error}>{error}</Typography>
           )}
           <Button color="primary" variant="contained" fullWidth type="submit">
             Submit

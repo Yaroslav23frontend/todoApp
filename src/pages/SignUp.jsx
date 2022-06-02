@@ -1,5 +1,5 @@
 import { Container } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Forms from "../components/Forms";
 import { auth } from "../firebase/firebase";
 import {
@@ -10,7 +10,9 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Typography from "@mui/material/Typography";
 export default function SignUp() {
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const settings = useSelector((state) => state.settings);
   function signUp(email, password) {
@@ -29,6 +31,7 @@ export default function SignUp() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        setError(errorMessage);
         // ..
       });
   }
@@ -43,7 +46,7 @@ export default function SignUp() {
         width: "100%",
       }}
     >
-      <Forms signUp={true} func={signUp} />
+      <Forms signUp={true} func={signUp} error={error} />
     </Container>
   );
 }

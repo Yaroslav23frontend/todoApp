@@ -11,6 +11,7 @@ export default function Items({
   sort,
   boardName,
   loading,
+  error,
 }) {
   const styles = {
     formGroup: {
@@ -70,12 +71,13 @@ export default function Items({
     }
     return filteredData;
   }, [filterDate, filteredData]);
+
   if (loading === false) {
     return (
       <FormGroup sx={styles.formGroup}>
         {data.length === 0 ? (
           <Typography sx={styles.text} variant="h6" component="h2">
-            You don't have any tasks yet
+            {error ? error : "You don't have any tasks yet"}
           </Typography>
         ) : (
           <>
