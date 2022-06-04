@@ -8,7 +8,9 @@ import Paper from "@mui/material/Paper";
 import { useAuth } from "../context/AuthContext";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../store/action";
+import { useTranslation } from "react-i18next";
 export default function ResetEmail() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [changed, setChanged] = useState("");
   const dispatch = useDispatch();
@@ -57,7 +59,7 @@ export default function ResetEmail() {
     <Forms
       reset={true}
       resetEmail={true}
-      resetText={"Change email"}
+      resetText={t("settings.changeEmail")}
       func={reset}
       error={error}
     />

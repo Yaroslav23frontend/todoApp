@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useTranslation } from "react-i18next";
 export default function CustomModal({
   open,
   handleConfirm,
@@ -15,8 +16,8 @@ export default function CustomModal({
   editBoardName,
   item = { item: "", date: "" },
   editItem,
-  editFirestore,
 }) {
+  const { t } = useTranslation();
   const validationSchema = yup.object({
     item: yup
       .string("Enter your password")
@@ -101,8 +102,10 @@ export default function CustomModal({
               />
             </Box>
             <Box sx={styles.boxButtons}>
-              <Button onClick={formik.handleSubmit}>Rename</Button>
-              <Button onClick={handleCancele}>Cancel</Button>
+              <Button onClick={formik.handleSubmit}>
+                {t("buttons.rename")}
+              </Button>
+              <Button onClick={handleCancele}>{t("buttons.cancel")}</Button>
             </Box>
           </Box>
         </Modal>
@@ -154,8 +157,10 @@ export default function CustomModal({
             </Box>
 
             <Box sx={styles.boxButtons}>
-              <Button onClick={formikEditItem.handleSubmit}>Submit</Button>
-              <Button onClick={handleCancele}>Cancel</Button>
+              <Button onClick={formikEditItem.handleSubmit}>
+                {t("buttons.change")}
+              </Button>
+              <Button onClick={handleCancele}>{t("buttons.cancel")}</Button>
             </Box>
           </Box>
         </Modal>
@@ -172,8 +177,8 @@ export default function CustomModal({
         <Box sx={styles.box}>
           <p id="parent-modal-description">{massege}</p>
           <Box sx={styles.boxButtons}>
-            <Button onClick={handleConfirm}>Delete</Button>
-            <Button onClick={handleCancele}>Cancel</Button>
+            <Button onClick={handleConfirm}>{t("buttons.delete")}</Button>
+            <Button onClick={handleCancele}>{t("buttons.cancel")}</Button>
           </Box>
         </Box>
       </Modal>
@@ -186,7 +191,7 @@ const styles = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: 320,
     bgcolor: "background.paper",
     border: "2px solid #000",
     boxShadow: 24,

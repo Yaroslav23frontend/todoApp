@@ -4,7 +4,9 @@ import Forms from "../components/Forms";
 import { auth } from "../firebase/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Typography from "@mui/material/Typography";
+import { useTranslation } from "react-i18next";
 export default function SignIn() {
+  const { t } = useTranslation();
   const [error, setError] = useState("");
   function signIn(email, password) {
     signInWithEmailAndPassword(auth, email, password)
@@ -15,11 +17,13 @@ export default function SignIn() {
       })
       .catch((error) => {
         if (error.message.includes("user")) {
-          setError("User not found");
+          return setError(t("auth.messages.userNotFound"));
         } else if (error.message.includes("password")) {
-          setError("Wrong password");
+          return setError(t("auth.messages.wrongPassword"));
+        } else if (error.message.includes("network")) {
+          return setError(t("auth.messages.offline"));
         }
-        setError(error.message);
+        return setError(error.message);
       });
   }
   return (

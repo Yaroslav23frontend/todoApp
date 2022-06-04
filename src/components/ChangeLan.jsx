@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useTranslation } from "react-i18next";
-export default function SettingsItemsColors({ label, value, setValue, id }) {
+export default function ChangeLan({ label, value, setValue, id }) {
   const { t } = useTranslation();
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -20,7 +20,7 @@ export default function SettingsItemsColors({ label, value, setValue, id }) {
   };
   return (
     <Box sx={styles.box}>
-      <Typography sx={styles.text}>{id}</Typography>
+      <Typography sx={styles.text}>{t("settings.lan.title")}</Typography>
       <FormControl variant="standard" sx={styles.select}>
         <InputLabel id={id}>{value}</InputLabel>
         <Select
@@ -37,18 +37,9 @@ export default function SettingsItemsColors({ label, value, setValue, id }) {
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={"black"}>{t("colors.black")}</MenuItem>
-          <MenuItem value={"white"}>{t("colors.white")}</MenuItem>
-          <MenuItem value={"gray"}>{t("colors.gray")}</MenuItem>
-          <MenuItem value={"red"}>{t("colors.red")}</MenuItem>
-          <MenuItem value={"orange"}>{t("colors.orange")}</MenuItem>
-          <MenuItem value={"yellow"}>{t("colors.yellow")}</MenuItem>
-          <MenuItem value={"green"}>{t("colors.green")}</MenuItem>
-          <MenuItem value={"azure"}>{t("colors.azure")}</MenuItem>
-          <MenuItem value={"navy"}>{t("colors.navy")}</MenuItem>
-          <MenuItem value={"purple"}>{t("colors.purple")}</MenuItem>
-          <MenuItem value={"pink"}>{t("colors.pink")}</MenuItem>
-          <MenuItem value={"brown"}>{t("colors.brown")}</MenuItem>
+          <MenuItem value={"en"}>{t("settings.lan.en")}</MenuItem>
+          <MenuItem value={"ukr"}>{t("settings.lan.ua")}</MenuItem>
+          <MenuItem value={"ru"}>{t("settings.lan.ru")}</MenuItem>
         </Select>
       </FormControl>
     </Box>

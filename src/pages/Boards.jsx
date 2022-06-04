@@ -23,7 +23,9 @@ import AddBoard from "../components/AddBoard";
 import Board from "../components/Board";
 import CustomModal from "../components/Modal";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useTranslation } from "react-i18next";
 export default function Boards() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [searchData, setSearchData] = useState("");
   const boards = useSelector((state) => state.boards);
@@ -52,7 +54,7 @@ export default function Boards() {
           <SettingsIcon />
         </Button>
         <Button sx={styles.buttonSignOut} onClick={logOut}>
-          Sign out
+          {t("buttons.signOut")}
         </Button>
       </Box>
 
@@ -70,7 +72,9 @@ export default function Boards() {
             InputProps={{
               endAdornment:
                 searchData !== "" ? (
-                  <Button onClick={() => setSearchData("")}>Clear</Button>
+                  <Button onClick={() => setSearchData("")}>
+                    {t("buttons.clear")}
+                  </Button>
                 ) : (
                   ""
                 ),
@@ -84,7 +88,7 @@ export default function Boards() {
               <>
                 {data.length === 0 ? (
                   <Typography sx={styles.text} variant="h6" component="h2">
-                    You don't have any boards yet
+                    {t("messagesBoards.noTasks")}
                   </Typography>
                 ) : (
                   <></>

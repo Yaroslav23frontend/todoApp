@@ -9,8 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
 import { addBoard, addItem } from "../store/action";
 import * as yup from "yup";
-
+import { useTranslation } from "react-i18next";
 export default function AddBoard() {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.user.id);
   const data = useSelector((state) => state.boards);
   console.log(data);
@@ -93,7 +94,7 @@ export default function AddBoard() {
           sx={styles.inputAddItem}
           id="item"
           name="item"
-          label="Add new board"
+          label={t("placeholders.addBoard")}
           variant="standard"
           value={formik.values.item}
           onChange={formik.handleChange}
@@ -102,7 +103,7 @@ export default function AddBoard() {
         />
 
         <Button variant="outlined" type="submit">
-          Add
+          {t("buttons.add")}
         </Button>
       </Box>
     </form>

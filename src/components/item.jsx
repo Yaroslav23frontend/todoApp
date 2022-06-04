@@ -10,6 +10,8 @@ import { deleteItem } from "../store/action";
 import { completedItem, editItem } from "../store/action";
 import CustomModal from "./Modal";
 import { dateFormat, numberOfDays } from "../store/reducers/reducerItems";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 export default function Item({ data, id, listId, boardName }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.id);
@@ -132,8 +134,12 @@ export default function Item({ data, id, listId, boardName }) {
           </Typography>
         </Box>
         <Box sx={styles.buttonBox}>
-          <Button onClick={() => setModal(true)}>Edit</Button>
-          <Button onClick={delItem}>Delete</Button>
+          <Button onClick={() => setModal(true)}>
+            <EditIcon />
+          </Button>
+          <Button onClick={delItem}>
+            <DeleteIcon />
+          </Button>
         </Box>
       </Box>
     </>

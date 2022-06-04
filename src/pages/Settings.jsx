@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { useSettings } from "../context/SettingsContext";
 import SettingsItemsColors from "../components/SettingsItemsColors";
@@ -16,7 +15,11 @@ import CustomModal from "../components/Modal";
 import { doc, deleteDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { addBoards, addItems } from "../store/action";
+import { useTranslation } from "react-i18next";
+import ChangeLan from "../components/ChangeLan";
+import i18next from "i18next";
 export default function Settings({ back }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const _user = useSelector((state) => state.user);
@@ -26,6 +29,13 @@ export default function Settings({ back }) {
   const [result, setResult] = useState("");
   const data = useSelector((state) => state.boards);
   const settings = useSelector((state) => state.settings);
+  const [language, setLanguage] = useState(
+    document.cookie
+      .split(";")
+      .filter((el) => el.match("i18next"))
+      .join("")
+      .slice(8)
+  );
   const {
     _setToday,
     _setOverdue,
@@ -65,6 +75,11 @@ export default function Settings({ back }) {
     data.forEach(async (el) => await deleteDoc(doc(db, `${_user.id}`, el)));
     modalDeleteAllClose();
   }
+  function setLan(lan) {
+    i18next.changeLanguage(lan);
+    setLanguage(lan);
+  }
+
   return (
     <Paper sx={styles.paper}>
       <Button
@@ -73,73 +88,82 @@ export default function Settings({ back }) {
           navigate(-1);
         }}
       >
-        Back
+        {t("buttons.back")}
       </Button>
       <Box sx={styles.box}>
-        <Typography sx={styles.title} variant="h4" component="h1">
-          Personal
+        <Typography sx={styles.title} variant="h5" component="h1">
+          {t("settings.titles.personal")}
         </Typography>
 
         <Box sx={styles.box}>
           <Box sx={styles.boxDays}>
             <Typography>{_user.email}</Typography>
-            <Button onClick={() => navigate("/resetEmail")}>Change</Button>
+            <Button onClick={() => navigate("/resetEmail")}>
+              {t("buttons.change")}
+            </Button>
           </Box>
           <Box sx={styles.boxDays}>
-            <Typography>Password</Typography>
-            <Button onClick={() => navigate("/resetPassword")}>Change</Button>
+            <Typography>{t("settings.password")}</Typography>
+            <Button onClick={() => navigate("/resetPassword")}>
+              {t("buttons.change")}
+            </Button>
           </Box>
           <Box sx={styles.boxDays}>
-            <Typography>Delete acount</Typography>
-            <Button onClick={() => setModal(true)}>Delete</Button>
+            <Typography>{t("settings.deleteAccount")}</Typography>
+            <Button onClick={() => setModal(true)}>
+              {t("buttons.delete")}
+            </Button>
           </Box>
           <Box sx={styles.boxDays}>
-            <Typography>Delete all data</Typography>
-            <Button onClick={() => setModalDeleteAll(true)}>Delete</Button>
+            <Typography>{t("settings.deleteAllData")}</Typography>
+            <Button onClick={() => setModalDeleteAll(true)}>
+              {t("buttons.delete")}
+            </Button>
           </Box>
+          <ChangeLan id="lan" label="lan" value={language} setValue={setLan} />
           <CustomModal
             handleCancele={modalClose}
             handleConfirm={deleteAccount}
             open={modal}
-            massege={"Do you want to delete this account?"}
+            massege={t("messagesModal.deleteAccount")}
             result={result}
           />
           <CustomModal
             handleCancele={modalDeleteAllClose}
             handleConfirm={delAll}
             open={modalDeleteAll}
-            massege={"Do you want to delete all data?"}
+            massege={t("messagesModal.deleteAllData")}
           />
         </Box>
-        <Typography sx={styles.title} variant="h4" component="h1">
-          Colors
+        <Typography sx={styles.title} variant="h5" component="h1">
+          {t("settings.titles.colors")}
         </Typography>
         <SettingsItemsColors
           label="color"
-          id="Today"
+          id={t("settings.today")}
           value={settings.today}
           setValue={_setToday}
         />
         <SettingsItemsColors
           label="color"
-          id="Overdue"
+          id={t("settings.overdue")}
           value={settings.overdue}
           setValue={_setOverdue}
         />
         <SettingsItemsColors
           label="color"
-          id="Upcoming"
+          id={t("settings.upcoming")}
           value={settings.upcoming}
           setValue={_setUpcoming}
         />
         <SettingsItemsColors
           label="color"
-          id="Completed"
+          id={t("settings.completed")}
           value={settings.completed}
           setValue={_setCompleted}
         />
         <Box sx={styles.boxDays}>
-          <Typography>Upcomming(days)</Typography>
+          <Typography>{t("settings.upcomingDays")}</Typography>
           <TextField
             sx={styles.textField}
             name="Upcoming(days)"
@@ -149,7 +173,7 @@ export default function Settings({ back }) {
             type="number"
           />
         </Box>
-        <Button onClick={_resetSettings}>Reset</Button>
+        <Button onClick={_resetSettings}>{t("buttons.reset")}</Button>
       </Box>
     </Paper>
   );
@@ -167,7 +191,6 @@ const styles = {
     maxWidth: "1000px",
     width: "100%",
     minHeight: "400px",
-    height: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -194,5 +217,6 @@ const styles = {
   },
   buttonBack: {
     alignSelf: "flex-start",
+    marginTop: 2,
   },
 };

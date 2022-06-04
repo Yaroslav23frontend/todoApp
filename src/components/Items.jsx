@@ -3,6 +3,7 @@ import FormGroup from "@mui/material/FormGroup";
 import Item from "./item";
 import { useSelector } from "react-redux";
 import { Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 export default function Items({
   completed,
   search,
@@ -13,9 +14,10 @@ export default function Items({
   loading,
   error,
 }) {
+  const { t } = useTranslation();
   const styles = {
     formGroup: {
-      width: "calc(100% - 40px)",
+      width: "calc(100% )",
     },
     text: {
       position: "absolute",
@@ -77,7 +79,7 @@ export default function Items({
       <FormGroup sx={styles.formGroup}>
         {data.length === 0 ? (
           <Typography sx={styles.text} variant="h6" component="h2">
-            {error ? error : "You don't have any tasks yet"}
+            {error ? error : t("messagesItems.noTasks")}
           </Typography>
         ) : (
           <>

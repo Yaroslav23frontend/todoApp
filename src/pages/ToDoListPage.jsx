@@ -23,7 +23,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { db } from "../firebase/firebase";
 import { addItems } from "../store/action";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useTranslation } from "react-i18next";
 export default function ToDoListPage({ match }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [valueNav, setValueNav] = useState("all");
@@ -59,8 +61,11 @@ export default function ToDoListPage({ match }) {
   const { isVerified } = useAuth();
   async function getData() {
     const docSnap = await getDoc(doc(db, `${id}`, boardName)).catch((error) => {
-      setError(error.message);
       setLoading(false);
+      if (error.message.includes("offline")) {
+        return setError(t("messagesItems.offline"));
+      }
+      return setError(error.message);
     });
     const temp = [];
     let loading = true;
@@ -91,9 +96,11 @@ export default function ToDoListPage({ match }) {
           <SettingsIcon />
         </Button>
         <Box>
-          <Button onClick={() => navigate("../boards")}>Boards</Button>
+          <Button onClick={() => navigate("../boards")}>
+            {t("buttons.boards")}
+          </Button>
           <Button sx={styles.buttonSignOut} onClick={logOut}>
-            Sign out
+            {t("buttons.signOut")}
           </Button>
         </Box>
       </Box>
@@ -103,7 +110,7 @@ export default function ToDoListPage({ match }) {
           <TextField
             sx={styles.inputSearch}
             id="standard-basic"
-            label="Search"
+            label={t("placeholders.search")}
             variant="standard"
             value={searchData}
             onChange={(e) => {
@@ -112,7 +119,9 @@ export default function ToDoListPage({ match }) {
             InputProps={{
               endAdornment:
                 searchData !== "" ? (
-                  <Button onClick={() => setSearchData("")}>Clear</Button>
+                  <Button onClick={() => setSearchData("")}>
+                    {t("buttons.clear")}
+                  </Button>
                 ) : (
                   ""
                 ),
@@ -127,11 +136,20 @@ export default function ToDoListPage({ match }) {
             aria-label="secondary tabs example"
             sx={styles.tabs}
           >
-            <Tab value="all" label="All" />
-            <Tab value={""} label="Active" />
-            <Tab value={true} label="Completed" />
+            <Tab value="all" label={t("itemsTabs.all")} />
+            <Tab value={""} label={t("itemsTabs.active")} />
+            <Tab value={true} label={t("itemsTabs.completed")} />
           </Tabs>
-          <Box sx={{ alignSelf: "flex-start" }}>
+          <Box
+            sx={{
+              display: "flex",
+              width: "95%",
+              gap: 2,
+              alignSelf: "flex-start",
+              marginRight: "auto",
+              marginLeft: "auto",
+            }}
+          >
             <FormControl variant="standard" sx={styles.select}>
               <InputLabel id="demo-simple-select-standard-label">
                 Filter
@@ -143,19 +161,19 @@ export default function ToDoListPage({ match }) {
                 onChange={(e) => {
                   setFilter(e.target.value);
                 }}
-                label="Filter"
+                label={t("filters.filter")}
               >
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                <MenuItem value={"Today"}>Today</MenuItem>
-                <MenuItem value={"Overdue"}>Overdue</MenuItem>
-                <MenuItem value={"Upcoming"}>Upcoming</MenuItem>
+                <MenuItem value={"Today"}>{t("filters.today")}</MenuItem>
+                <MenuItem value={"Overdue"}>{t("filters.overdue")}</MenuItem>
+                <MenuItem value={"Upcoming"}>{t("filters.upcoming")}</MenuItem>
               </Select>
             </FormControl>
             <FormControl variant="standard" sx={styles.select}>
               <InputLabel id="demo-simple-select-standard-label2">
-                Sort by date
+                {t("filters.sort")}
               </InputLabel>
               <Select
                 labelId="demo-simple-select-standard-label"
@@ -281,9 +299,7 @@ const styles = {
     tabSize: "0px",
   },
   select: {
-    alignSelf: "flex-start",
     minWidth: 120,
-    marginLeft: 5.5,
   },
   progress: {
     position: "absolute",

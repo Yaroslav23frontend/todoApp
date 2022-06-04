@@ -1,109 +1,110 @@
 {
-  "main_nav": {
-    "all": "My CV",
-    "lan": "Language",
-    "sign_out": "Sign out",
-    "sign_in": "Sign in"
-  },
-  "landing": {
-    "header_section": {
-      "title": "Create a CV to land your next job",
-      "text": "In just a few minutes, increase your chances of finding a job by 70%. Create and download your professional CV immediately."
+  "auth": {
+    "signIn": {
+      "signIn": "Sign in",
+      "submit": "Submit",
+      "signInWithGoogle": "Sign in with Google",
+      "forget": "Forgot password?",
+      "password": "Password",
+      "confirmPasword": "Confirmation Password",
+      "signUp": "Sign up"
     },
-    "subscribe_section": {
-      "title": {
-        "h2": "Subscribe to CV Builder",
-        "span": "Get your dream job with the help of CV Builder."
-      },
-      "ul": {
-        "title": "With CV Builder you'll be able to:",
-        "items": [
-          "Create your own professional CV in just a few minutes with our tool.",
-          "Store your CVs in your personal account and edit them whenever you need to.",
-          "Download your CV."
-        ]
-      }
+    "signUp": {
+      "signUp": "Sign up",
+      "signIn": "Sign in",
+      "submit": "Submit",
+      "signInWithGoogle": "Sign up with Google"
     },
-    "buttons": {
-      "create": "Create CV",
-      "subscribe": "Subscribe"
+    "forget": {
+      "title": "Reset the password",
+      "submit": "Submit",
+      "back": "Back",
+      "signUp": "Sign up",
+      "signIn": "Sign in",
+      "password": "Password",
+      "confirmPasword": "Confirmation Password"
+    },
+    "messages": {
+      "offline": "Please check your internet connection",
+      "wrongPassword": "Wrong password",
+      "userNotFound": "User not found"
     }
   },
-  "nav_bar": {
-    "nav_bar_personal": "Personal",
-    "nav_bar_exp": "Experience",
-    "nav_bar_preview": "Preview"
-  },
-  "personal": {
-    "personal": "Personal",
-    "additional": "Additional inforamition",
-    "basic": "Basic informaition",
-    "name": "Name*",
-    "lastName": "Last Name*",
-    "tel": "Telephone number*",
-    "address": "Address",
-    "zip": "Postal code",
-    "city": "City/Town"
-  },
-  "cv": {
-    "personal": "PEROSNAL",
-    "exp": "WORK EXPERIENCE",
-    "study": "STUDIES AND CERTIFICATES",
-    "skills": "SKILLS",
-    "lan": "LANGUAGES"
-  },
-  "exp_section": {
-    "experience": "Experience",
-    "profile": {
-      "profile": "Profile",
-      "description": "Description"
+  "settings": {
+    "titles": {
+      "personal": "Personal",
+      "colors": "Colors"
+    },
+    "password": "Password",
+    "deleteAccount": "Delete account",
+    "deleteAllData": "Delete all data",
+    "today": "Today",
+    "overdue": "Overdue",
+    "upcoming": "Upcoming",
+    "completed": "Completed",
+    "upcomingDays": "Upcoming days",
+    "changeEmail": "Change email",
+    "lan": {
+      "title": "Language",
+      "en": "en",
+      "ua": "ua",
+      "ru": "ru"
     }
   },
-  "work_exp_section": {
-    "h": "Work Experience",
-    "title": "Title/Position",
-    "city": "City/Town",
-    "company": "Company",
-    "start_date": "Start date",
-    "end_date": "End date",
-    "description": "Description"
-  },
-  "study_section": {
-    "h": "Studies and certificates",
-    "studies": "Studies",
-    "location": "Location",
-    "insitution": "Institution/Center",
-    "start_date": "Start date",
-    "end_date": "End date",
-    "description": "Description"
-  },
-
-  "skills": "Skills",
-  "languages_section": {
-    "h": "Languages",
-    "en": "English",
-    "pl": "Polish",
-    "sp": "Spanish",
-    "ru": "Russian",
-    "ukr": "Ukrainian",
-    "fr": "French",
-    "por": "Portuguese",
-    "ger": "German",
-    "it": "Italian",
-    "native": "Native",
-    "pre": "Pre-intermediate",
-    "inter": "Intermediate",
-    "upper": "Upper-intermediate",
-    "adv": "Advanced",
-    "pro": "Proficient",
-    "basic": "Beginner"
+  "colors": {
+    "black": "black",
+    "white": "white",
+    "gray": "gray",
+    "red": "red",
+    "orange": "orange",
+    "yellow": "yellow",
+    "green": "green",
+    "azure": "azure",
+    "navy": "navy",
+    "purple": "purple",
+    "pink": "pink",
+    "brown": "brown"
   },
   "buttons": {
-    "add": "Add",
-    "save": "Save",
-    "cancel": "Cancel",
-    "next": "Next",
     "delete": "Delete",
-    "edit": "Edit"
+    "rename": "Rename",
+    "add": "Add",
+    "clear": "Clear",
+    "signOut": "Sign Out",
+    "cancel": "Cancel",
+    "boards": "Boards",
+    "reset": "Reset",
+    "change": "Change",
+    "back": "Back"
+  },
+  "filters": {
+    "filter": "Filter",
+    "today": "Today",
+    "overdue": "Overdue",
+    "upcoming": "Upcoming",
+    "sort": "Sort by date"
+  },
+  "placeholders": {
+    "addBoard": "Add new board",
+    "addItem": "Add new item",
+    "search": "Search"
+  },
+  "messagesModal": {
+    "deleteBoard": "Do you want delete this board?",
+    "deleteAccount": "Do you want to delete this account?",
+    "deleteAllData": "Do you want to delete all data?"
+  },
+  "itemsTabs": {
+    "all": "All",
+    "active": "Active",
+    "completed": "Completed"
+  },
+  "messagesItems": {
+    "noTasks": "You don't have any tasks yet",
+    "offline": "Please check your internet connection"
+  },
+  "messagesBoards": {
+    "noTasks": "You don't have any boards yet",
+    "offline": "Please check your internet connection"
   }
 }

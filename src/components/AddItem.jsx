@@ -9,8 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
 import { addItem } from "../store/action";
 import * as yup from "yup";
-
+import { useTranslation } from "react-i18next";
 export default function AddItem({ docName }) {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.user.id);
   const data = useSelector((state) => state.items);
   const { id, setId } = useAuth();
@@ -101,7 +102,7 @@ export default function AddItem({ docName }) {
           sx={styles.inputAddItem}
           id="item"
           name="item"
-          label="New item"
+          label={t("placeholders.addItem")}
           variant="standard"
           value={formik.values.item}
           onChange={formik.handleChange}
@@ -121,7 +122,7 @@ export default function AddItem({ docName }) {
           />
 
           <Button variant="outlined" type="submit">
-            Add
+            {t("buttons.add")}
           </Button>
         </Box>
       </Box>

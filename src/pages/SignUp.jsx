@@ -10,8 +10,9 @@ import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Typography from "@mui/material/Typography";
+import { useTranslation } from "react-i18next";
 export default function SignUp() {
+  const { t } = useTranslation();
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const settings = useSelector((state) => state.settings);
@@ -31,7 +32,10 @@ export default function SignUp() {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        setError(errorMessage);
+        if (error.message.includes("network")) {
+          return setError(t("auth.messages.offline"));
+        }
+        return setError(errorMessage);
         // ..
       });
   }

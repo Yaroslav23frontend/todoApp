@@ -10,7 +10,11 @@ import { addBoards, deleteBoard, deleteItem } from "../store/action";
 import { completedItem } from "../store/action";
 import { useNavigate } from "react-router-dom";
 import CustomModal from "./Modal";
+import { useTranslation } from "react-i18next";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 export default function Board({ data }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.id);
@@ -73,8 +77,12 @@ export default function Board({ data }) {
           {data}
         </Button>
         <Box>
-          <Button onClick={() => setDelModal(true)}>Delete</Button>
-          <Button onClick={() => setModal(true)}>Rename</Button>
+          <Button onClick={() => setModal(true)}>
+            <EditIcon />
+          </Button>
+          <Button onClick={() => setDelModal(true)}>
+            <DeleteIcon />
+          </Button>
         </Box>
       </Box>
       <CustomModal
@@ -89,7 +97,7 @@ export default function Board({ data }) {
         handleConfirm={delItem}
         open={delModal}
         boardName={data}
-        massege={"Do you want delete this board?"}
+        massege={t("messagesModal.deleteBoard")}
       />
     </>
   );

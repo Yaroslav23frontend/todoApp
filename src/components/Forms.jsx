@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Button from "@mui/material/Button";
@@ -13,6 +13,7 @@ import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
 import { useNavigate } from "react-router-dom";
 import Header from "../pages/Header";
+import { useTranslation } from "react-i18next";
 const validationSchema = yup.object({
   email: yup
     .string("Enter your email")
@@ -64,6 +65,8 @@ export default function Forms({
   resetPassword,
   error,
 }) {
+  const { t } = useTranslation();
+  const [authGoogleError, setAuthGoogleError] = useState("");
   const navigate = useNavigate();
   const provider = new GoogleAuthProvider();
   function signInWithGoogle() {
@@ -73,7 +76,10 @@ export default function Forms({
         navigate("../");
       })
       .catch((error) => {
-        alert(error);
+        if (error.message.includes("network")) {
+          return setAuthGoogleError(t("auth.messages.offline"));
+        }
+        return setAuthGoogleError(error.message);
       });
   }
   const formik = useFormik({
@@ -124,8 +130,8 @@ export default function Forms({
       <Paper sx={styles.paper}>
         <Header />
         <form onSubmit={formik.handleSubmit}>
-          <Typography variant="h3" component="h1" sx={styles.title}>
-            Sign Up
+          <Typography variant="h4" component="h1" sx={styles.title}>
+            {t("auth.signUp.signUp")}
           </Typography>
           <Box sx={styles.inputBox}>
             <TextField
@@ -142,7 +148,7 @@ export default function Forms({
               fullWidth
               id="password"
               name="password"
-              label="password"
+              label={t("auth.signUp.password")}
               type="password"
               value={formik.values.password}
               onChange={formik.handleChange}
@@ -153,7 +159,7 @@ export default function Forms({
               fullWidth
               id="confirmationPassword"
               name="confirmationPassword"
-              label="Confirmation Password"
+              label={t("auth.signUp.confirmPasword")}
               type="password"
               value={formik.values.confirmationPassword}
               onChange={formik.handleChange}
@@ -168,7 +174,7 @@ export default function Forms({
             />
             <Typography sx={styles.error}>{error}</Typography>
             <Button color="primary" variant="contained" fullWidth type="submit">
-              Submit
+              {t("auth.signUp.submit")}
             </Button>
             <Button
               sx={styles.button}
@@ -179,10 +185,11 @@ export default function Forms({
               onClick={signInWithGoogle}
             >
               <GoogleIcon sx={styles.icon}></GoogleIcon>
-              Sign Up with google
+              {t("auth.signUp.signInWithGoogle")}
             </Button>
+            <Typography sx={styles.errorGoogle}>{authGoogleError}</Typography>
             <Box sx={styles.linksBox}>
-              <Link href="/">Sign in</Link>
+              <Link href="/"> {t("auth.signUp.signIn")}</Link>
             </Box>
           </Box>
         </form>
@@ -194,7 +201,7 @@ export default function Forms({
       <Paper sx={styles.paper}>
         <Header />
         <form onSubmit={formikReset.handleSubmit}>
-          <Typography variant="h3" component="h1" sx={styles.title}>
+          <Typography variant="h4" component="h1" sx={styles.title}>
             {resetText}
           </Typography>
           <Box sx={styles.inputBox}>
@@ -212,16 +219,18 @@ export default function Forms({
             />
             <Typography sx={styles.error}>{error}</Typography>
             <Button color="primary" variant="contained" fullWidth type="submit">
-              Submit
+              {t("auth.forget.submit")}
             </Button>
-            <Button onClick={() => navigate(-1)}>Back</Button>
+            <Button onClick={() => navigate(-1)}>
+              {t("auth.forget.back")}
+            </Button>
             {resetEmail ? (
               <></>
             ) : (
               <Box sx={styles.linksBox}>
-                <Link href="/signup">Sign up</Link>
+                <Link href="/signup">{t("auth.forget.signUp")}</Link>
                 <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                <Link href="/">Sign in</Link>
+                <Link href="/">{t("auth.forget.signIn")}</Link>
               </Box>
             )}
           </Box>
@@ -234,15 +243,15 @@ export default function Forms({
       <Paper sx={styles.paper}>
         <Header />
         <form onSubmit={formikResetPassword.handleSubmit}>
-          <Typography variant="h3" component="h1" sx={styles.title}>
-            Reset password
+          <Typography variant="h4" component="h1" sx={styles.title}>
+            {t("auth.forget.title")}
           </Typography>
           <Box sx={styles.inputBox}>
             <TextField
               fullWidth
               id="password"
               name="password"
-              label="password"
+              label={t("auth.forget.password")}
               type="password"
               value={formikResetPassword.values.password}
               onChange={formikResetPassword.handleChange}
@@ -259,7 +268,7 @@ export default function Forms({
               fullWidth
               id="confirmationPassword"
               name="confirmationPassword"
-              label="Confirmation Password"
+              label={t("auth.forget.confirmPasword")}
               type="password"
               value={formikResetPassword.values.confirmationPassword}
               onChange={formikResetPassword.handleChange}
@@ -274,9 +283,11 @@ export default function Forms({
             />
             <Typography sx={styles.error}>{error}</Typography>
             <Button color="primary" variant="contained" fullWidth type="submit">
-              Submit
+              {t("auth.forget.submit")}
             </Button>
-            <Button onClick={() => navigate("../settings")}>Back</Button>
+            <Button onClick={() => navigate(-1)}>
+              {t("auth.forget.back")}
+            </Button>
           </Box>
         </form>
       </Paper>
@@ -286,8 +297,8 @@ export default function Forms({
     <Paper sx={styles.paper}>
       <Header />
       <form onSubmit={formikSignIn.handleSubmit}>
-        <Typography variant="h3" component="h1" sx={styles.title}>
-          Sign In
+        <Typography variant="h4" component="h1" sx={styles.title}>
+          {t("auth.signIn.signIn")}
         </Typography>
         <Box sx={styles.inputBox}>
           <TextField
@@ -311,7 +322,7 @@ export default function Forms({
             fullWidth
             id="password"
             name="password"
-            label="Password"
+            label={t("auth.signIn.password")}
             type="password"
             value={formikSignIn.values.password}
             onChange={formikSignIn.handleChange}
@@ -334,7 +345,7 @@ export default function Forms({
             <Typography sx={styles.error}>{error}</Typography>
           )}
           <Button color="primary" variant="contained" fullWidth type="submit">
-            Submit
+            {t("auth.signIn.submit")}
           </Button>
           <Button
             sx={styles.button}
@@ -344,21 +355,22 @@ export default function Forms({
             onClick={signInWithGoogle}
           >
             <GoogleIcon sx={styles.icon}></GoogleIcon>
-            Sign In with google
+            {t("auth.signIn.signInWithGoogle")}
           </Button>
+          <Typography sx={styles.errorGoogle}>{authGoogleError}</Typography>
           <Box sx={styles.linksBox}>
             <Link
               sx={[styles.link, { justifyContent: "flex-start" }]}
               href="/signup"
             >
-              Sign up
+              {t("auth.signIn.signUp")}
             </Link>
             <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
             <Link
               sx={[styles.link, { justifyContent: "flex-end" }]}
               href="/reset"
             >
-              Forget the password?
+              {t("auth.signIn.forget")}
             </Link>
           </Box>
         </Box>
@@ -411,5 +423,10 @@ const styles = {
     marginTop: "-15px",
     marginLeft: "15px",
     alignSelf: "flex-start",
+  },
+  errorGoogle: {
+    fontSize: "12px",
+    color: "red",
+    marginTop: "-15px",
   },
 };
