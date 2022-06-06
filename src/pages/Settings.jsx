@@ -18,6 +18,7 @@ import { addBoards, addItems } from "../store/action";
 import { useTranslation } from "react-i18next";
 import ChangeLan from "../components/ChangeLan";
 import i18next from "i18next";
+import CustomBox from "../components/CustomBox";
 export default function Settings({ back }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -90,98 +91,107 @@ export default function Settings({ back }) {
       >
         {t("buttons.back")}
       </Button>
-      <Box sx={styles.box}>
-        <Typography sx={styles.title} variant="h5" component="h1">
-          {t("settings.titles.personal")}
-        </Typography>
-
+      <CustomBox maxHeight="100%">
         <Box sx={styles.box}>
-          <Box sx={styles.boxDays}>
-            <Typography>{_user.email}</Typography>
-            <Button onClick={() => navigate("/resetEmail")}>
-              {t("buttons.change")}
-            </Button>
+          <Typography sx={styles.title} variant="h5" component="h1">
+            {t("settings.titles.personal")}
+          </Typography>
+
+          <Box sx={styles.box}>
+            <Box sx={styles.boxDays}>
+              <Typography>{_user.email}</Typography>
+              <Button onClick={() => navigate("/resetEmail")}>
+                {t("buttons.change")}
+              </Button>
+            </Box>
+            <Box sx={styles.boxDays}>
+              <Typography>{t("settings.password")}</Typography>
+              <Button onClick={() => navigate("/resetPassword")}>
+                {t("buttons.change")}
+              </Button>
+            </Box>
+            <Box sx={styles.boxDays}>
+              <Typography>{t("settings.deleteAccount")}</Typography>
+              <Button onClick={() => setModal(true)}>
+                {t("buttons.delete")}
+              </Button>
+            </Box>
+            <Box sx={styles.boxDays}>
+              <Typography>{t("settings.deleteAllData")}</Typography>
+              <Button onClick={() => setModalDeleteAll(true)}>
+                {t("buttons.delete")}
+              </Button>
+            </Box>
+            <ChangeLan
+              id="lan"
+              label="lan"
+              value={language}
+              setValue={setLan}
+            />
+            <CustomModal
+              handleCancele={modalClose}
+              handleConfirm={deleteAccount}
+              open={modal}
+              massege={t("messagesModal.deleteAccount")}
+              result={result}
+            />
+            <CustomModal
+              handleCancele={modalDeleteAllClose}
+              handleConfirm={delAll}
+              open={modalDeleteAll}
+              massege={t("messagesModal.deleteAllData")}
+            />
           </Box>
-          <Box sx={styles.boxDays}>
-            <Typography>{t("settings.password")}</Typography>
-            <Button onClick={() => navigate("/resetPassword")}>
-              {t("buttons.change")}
-            </Button>
-          </Box>
-          <Box sx={styles.boxDays}>
-            <Typography>{t("settings.deleteAccount")}</Typography>
-            <Button onClick={() => setModal(true)}>
-              {t("buttons.delete")}
-            </Button>
-          </Box>
-          <Box sx={styles.boxDays}>
-            <Typography>{t("settings.deleteAllData")}</Typography>
-            <Button onClick={() => setModalDeleteAll(true)}>
-              {t("buttons.delete")}
-            </Button>
-          </Box>
-          <ChangeLan id="lan" label="lan" value={language} setValue={setLan} />
-          <CustomModal
-            handleCancele={modalClose}
-            handleConfirm={deleteAccount}
-            open={modal}
-            massege={t("messagesModal.deleteAccount")}
-            result={result}
+          <Typography sx={styles.title} variant="h5" component="h1">
+            {t("settings.titles.colors")}
+          </Typography>
+          <SettingsItemsColors
+            label="color"
+            id={t("settings.today")}
+            value={settings.today}
+            setValue={_setToday}
           />
-          <CustomModal
-            handleCancele={modalDeleteAllClose}
-            handleConfirm={delAll}
-            open={modalDeleteAll}
-            massege={t("messagesModal.deleteAllData")}
+          <SettingsItemsColors
+            label="color"
+            id={t("settings.overdue")}
+            value={settings.overdue}
+            setValue={_setOverdue}
           />
+          <SettingsItemsColors
+            label="color"
+            id={t("settings.upcoming")}
+            value={settings.upcoming}
+            setValue={_setUpcoming}
+          />
+          <SettingsItemsColors
+            label="color"
+            id={t("settings.completed")}
+            value={settings.completed}
+            setValue={_setCompleted}
+          />
+          <Box sx={styles.boxDays}>
+            <Typography>{t("settings.upcomingDays")}</Typography>
+            <TextField
+              sx={styles.textField}
+              name="Upcoming(days)"
+              value={settings.upcomingDays}
+              onChange={(e) => _setUpcomingDays(e.target.value)}
+              variant="standard"
+              type="number"
+            />
+          </Box>
         </Box>
-        <Typography sx={styles.title} variant="h5" component="h1">
-          {t("settings.titles.colors")}
-        </Typography>
-        <SettingsItemsColors
-          label="color"
-          id={t("settings.today")}
-          value={settings.today}
-          setValue={_setToday}
-        />
-        <SettingsItemsColors
-          label="color"
-          id={t("settings.overdue")}
-          value={settings.overdue}
-          setValue={_setOverdue}
-        />
-        <SettingsItemsColors
-          label="color"
-          id={t("settings.upcoming")}
-          value={settings.upcoming}
-          setValue={_setUpcoming}
-        />
-        <SettingsItemsColors
-          label="color"
-          id={t("settings.completed")}
-          value={settings.completed}
-          setValue={_setCompleted}
-        />
-        <Box sx={styles.boxDays}>
-          <Typography>{t("settings.upcomingDays")}</Typography>
-          <TextField
-            sx={styles.textField}
-            name="Upcoming(days)"
-            value={settings.upcomingDays}
-            onChange={(e) => _setUpcomingDays(e.target.value)}
-            variant="standard"
-            type="number"
-          />
-        </Box>
-        <Button onClick={_resetSettings}>{t("buttons.reset")}</Button>
-      </Box>
+        <Button onClick={_resetSettings} sx={{ marginBottom: "20px" }}>
+          {t("buttons.reset")}
+        </Button>
+      </CustomBox>
     </Paper>
   );
 }
 const styles = {
   title: {
     textAlign: "center",
-    marginBottom: "20px",
+    marginBottom: "10px",
   },
   paper: {
     position: "absolute",
@@ -191,6 +201,7 @@ const styles = {
     maxWidth: "1000px",
     width: "100%",
     minHeight: "400px",
+    height: "100vh",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -209,14 +220,14 @@ const styles = {
   },
   textField: {
     width: 120,
-    marginLeft: 7.6,
+    marginLeft: 8.6,
     textAlign: "center",
+    marginBottom: "20px",
   },
   textDays: {
     width: 150,
   },
   buttonBack: {
     alignSelf: "flex-start",
-    marginTop: 2,
   },
 };

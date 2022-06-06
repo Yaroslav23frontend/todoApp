@@ -13,7 +13,9 @@
       "signUp": "Sign up",
       "signIn": "Sign in",
       "submit": "Submit",
-      "signInWithGoogle": "Sign up with Google"
+      "signInWithGoogle": "Sign up with Google",
+      "password": "Password",
+      "confirmPasword": "Confirmation Password"
     },
     "forget": {
       "title": "Reset the password",

@@ -188,9 +188,8 @@ export default function Forms({
               {t("auth.signUp.signInWithGoogle")}
             </Button>
             <Typography sx={styles.errorGoogle}>{authGoogleError}</Typography>
-            <Box sx={styles.linksBox}>
-              <Link href="/"> {t("auth.signUp.signIn")}</Link>
-            </Box>
+
+            <Link href="/">{t("auth.signUp.signIn")}</Link>
           </Box>
         </form>
       </Paper>
@@ -365,7 +364,16 @@ export default function Forms({
             >
               {t("auth.signIn.signUp")}
             </Link>
-            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+            <Divider
+              sx={{
+                height: 28,
+                m: 0.5,
+                position: "absolute",
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+              orientation="vertical"
+            />
             <Link
               sx={[styles.link, { justifyContent: "flex-end" }]}
               href="/reset"
@@ -391,7 +399,9 @@ const styles = {
     left: "50%",
     transform: "translate(-50%, -50%)",
     padding: "20px",
-    minWidth: "360px",
+    maxWidth: "400px",
+    padding: "10px",
+    width: "100%",
   },
   inputBox: {
     display: "flex",
@@ -411,11 +421,12 @@ const styles = {
   linksBox: {
     display: "flex",
     alignItems: "center",
+    justifyContent: "space-between",
     gap: "20px",
+    width: "100%",
   },
   link: {
     display: "flex",
-    width: "150px",
   },
   error: {
     fontSize: "12px",
@@ -428,5 +439,8 @@ const styles = {
     fontSize: "12px",
     color: "red",
     marginTop: "-15px",
+  },
+  signUpLink: {
+    justifySelf: "center",
   },
 };

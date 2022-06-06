@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) =>
   createStyles({
     scroll: {
       width: "95%",
-      maxHeight: "calc(100vh - 320px)",
+      maxHeight: "calc(100vh - 340px)",
       overflowY: "auto",
       marginTop: 10,
       display: "flex",
@@ -28,11 +28,13 @@ const useStyles = makeStyles((theme) =>
 
 const theme = createTheme();
 
-export default function CustomBox({ children }) {
+export default function CustomBox({ children, maxHeight }) {
   const classes = useStyles();
   return (
     <ThemeProvider theme={theme}>
-      <div className={classes.scroll}>{children}</div>
+      <div className={classes.scroll} style={{ maxHeight: maxHeight }}>
+        {children}
+      </div>
     </ThemeProvider>
   );
 }
