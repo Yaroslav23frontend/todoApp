@@ -152,7 +152,7 @@ export default function ToDoListPage({ match }) {
           >
             <FormControl variant="standard" sx={styles.select}>
               <InputLabel id="demo-simple-select-standard-label">
-                Filter
+                {t("filters.filter")}
               </InputLabel>
               <Select
                 labelId="demo-simple-select-standard-label"

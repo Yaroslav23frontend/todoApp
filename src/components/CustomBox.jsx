@@ -11,8 +11,11 @@ const useStyles = makeStyles((theme) =>
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
+      paddingLeft: 3,
+      paddingRight: 3,
       "&::-webkit-scrollbar": {
-        width: "0.4em",
+        width: "0.2em",
+        marginRight: 2,
       },
       "&::-webkit-scrollbar-track": {
         boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",

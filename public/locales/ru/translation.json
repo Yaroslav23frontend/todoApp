@@ -41,9 +41,9 @@
     "deleteAllData": "Удалить все данные",
     "today": "Сегодня",
     "overdue": "Просроченые",
-    "upcoming": "Предстоящие",
+    "upcoming": "Вскоре",
     "completed": "Выполненые",
-    "upcomingDays": "Предстоящие дени",
+    "upcomingDays": "Вскоре(кол. дней)",
     "changeEmail": "Сменить email",
     "lan": {
       "title": "Язык",
@@ -82,12 +82,12 @@
     "filter": "Фильтр",
     "today": "Сегодня",
     "overdue": "Просроченые",
-    "upcoming": "Предстоящие",
+    "upcoming": "Вскоре",
     "sort": "Сортировать по дате"
   },
   "placeholders": {
     "addBoard": "Добавить новую доску",
-    "addItem": "Добавить новый элемент",
+    "addItem": "Добавить новое задание",
     "search": "Поиск"
   },
   "messagesModal": {

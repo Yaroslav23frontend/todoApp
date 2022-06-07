@@ -93,6 +93,7 @@ export default function Settings({ back }) {
       </Button>
       <CustomBox maxHeight="100%">
         <Box sx={styles.box}>
+          <ChangeLan id="lan" label="lan" value={language} setValue={setLan} />
           <Typography sx={styles.title} variant="h5" component="h1">
             {t("settings.titles.personal")}
           </Typography>
@@ -122,12 +123,7 @@ export default function Settings({ back }) {
                 {t("buttons.delete")}
               </Button>
             </Box>
-            <ChangeLan
-              id="lan"
-              label="lan"
-              value={language}
-              setValue={setLan}
-            />
+
             <CustomModal
               handleCancele={modalClose}
               handleConfirm={deleteAccount}
@@ -172,7 +168,19 @@ export default function Settings({ back }) {
           <Box sx={styles.boxDays}>
             <Typography>{t("settings.upcomingDays")}</Typography>
             <TextField
-              sx={styles.textField}
+              sx={{
+                width: 120,
+                marginLeft:
+                  language === "ru"
+                    ? 6.6
+                    : "" || language === "ukr"
+                    ? 1.6
+                    : "" || language === "en"
+                    ? 10
+                    : "",
+                textAlign: "center",
+                marginBottom: "20px",
+              }}
               name="Upcoming(days)"
               value={settings.upcomingDays}
               onChange={(e) => _setUpcomingDays(e.target.value)}

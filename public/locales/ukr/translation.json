@@ -41,9 +41,9 @@
     "deleteAllData": "Видалити всі дані",
     "today": "Сьогодні",
     "overdue": "Прострочено",
-    "upcoming": "Майбутні",
+    "upcoming": "Незабаром",
     "completed": "Виконані",
-    "upcomingDays": "Наступний день",
+    "upcomingDays": "Незабаром (кільк. днів)",
     "changeEmail": "Змінити email",
     "lan": {
       "title": "Мова",
@@ -82,12 +82,12 @@
     "filter": "Фільтр",
     "today": "Сьогодні",
     "overdue": "Прострочені",
-    "upcoming": "Майбутні",
+    "upcoming": "Незабаром",
     "sort": "Сортувати за датою"
   },
   "placeholders": {
     "addBoard": "Додати нову дошку",
-    "addItem": "Додати новий елемент",
+    "addItem": "Додати нове завдання",
     "search": "Пошук"
   },
   "messagesModal": {
