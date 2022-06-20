@@ -91,7 +91,7 @@ export default function Settings({ back }) {
       >
         {t("buttons.back")}
       </Button>
-      <CustomBox maxHeight="100%">
+      <CustomBox maxHeight={"100vh"}>
         <Box sx={styles.box}>
           <ChangeLan id="lan" label="lan" value={language} setValue={setLan} />
           <Typography sx={styles.title} variant="h5" component="h1">
@@ -209,7 +209,7 @@ const styles = {
     maxWidth: "1000px",
     width: "100%",
     minHeight: "400px",
-    height: "100vh",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -236,6 +236,7 @@ const styles = {
     width: 150,
   },
   buttonBack: {
+    display: "flex",
     alignSelf: "flex-start",
   },
 };
