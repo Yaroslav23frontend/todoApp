@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Paper from "@mui/material/Paper";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
@@ -16,14 +18,14 @@ import MenuItem from "@mui/material/MenuItem";
 import CustomBox from "../components/CustomBox";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import SettingsIcon from "@mui/icons-material/Settings";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getDocs, collection, getDoc, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../firebase/firebase";
 import { addItems } from "../store/action";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTranslation } from "react-i18next";
+import { blue } from "@mui/material/colors";
 export default function ToDoListPage({ match }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -92,17 +94,9 @@ export default function ToDoListPage({ match }) {
   return (
     <Paper sx={styles.paper}>
       <Box sx={styles.topNav}>
-        <Button onClick={() => navigate("/settings")}>
-          <SettingsIcon />
-        </Button>
-        <Box>
-          <Button onClick={() => navigate("../boards")}>
-            {t("buttons.boards")}
-          </Button>
-          <Button sx={styles.buttonSignOut} onClick={logOut}>
-            {t("buttons.signOut")}
-          </Button>
-        </Box>
+        <IconButton onClick={() => navigate("../boards")}>
+          <ArrowBackIcon sx={styles.buttonIcon} />
+        </IconButton>
       </Box>
 
       {isVerified ? (
@@ -240,7 +234,7 @@ const styles = {
     justifyContent: "center",
   },
   inputSearch: {
-    width: "95%",
+    width: "calc(100% - 50px)",
     marginBottom: "20px",
   },
   inputAddItem: {
@@ -307,7 +301,7 @@ const styles = {
     left: "50%",
     transform: "translate(-50%, -50%)",
   },
-  tabs: {
-    width: "100%",
+  buttonIcon: {
+    color: blue[600],
   },
 };

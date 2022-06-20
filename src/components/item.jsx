@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
 import Checkbox from "@mui/material/Checkbox";
 import { db } from "../firebase/firebase";
 import { deleteDoc, doc, updateDoc, deleteField } from "firebase/firestore";
@@ -100,6 +100,9 @@ export default function Item({ data, id, listId, boardName }) {
 
     return "";
   }
+  useEffect(() => {
+    setColor(dateColor());
+  }, [data]);
   return (
     <>
       <CustomModal
@@ -134,12 +137,12 @@ export default function Item({ data, id, listId, boardName }) {
           </Typography>
         </Box>
         <Box sx={styles.buttonBox}>
-          <Button onClick={() => setModal(true)}>
+          <IconButton onClick={() => setModal(true)}>
             <EditIcon />
-          </Button>
-          <Button onClick={delItem}>
+          </IconButton>
+          <IconButton onClick={delItem}>
             <DeleteIcon />
-          </Button>
+          </IconButton>
         </Box>
       </Box>
     </>

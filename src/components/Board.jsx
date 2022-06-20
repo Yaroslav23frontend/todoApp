@@ -1,13 +1,11 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
 import { db } from "../firebase/firebase";
 import { deleteDoc, doc, setDoc, getDoc } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
-import { addBoards, deleteBoard, deleteItem } from "../store/action";
-import { completedItem } from "../store/action";
+import { addBoards, deleteBoard } from "../store/action";
 import { useNavigate } from "react-router-dom";
 import CustomModal from "./Modal";
 import { useTranslation } from "react-i18next";
@@ -19,7 +17,6 @@ export default function Board({ data }) {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.id);
   const boards = useSelector((state) => state.boards);
-  const items = useSelector((state) => state.items);
   const [modal, setModal] = useState(false);
   const [delModal, setDelModal] = useState(false);
   const id = useSelector((state) => state.user.id);
@@ -77,12 +74,12 @@ export default function Board({ data }) {
           {data}
         </Button>
         <Box>
-          <Button onClick={() => setModal(true)}>
+          <IconButton onClick={() => setModal(true)}>
             <EditIcon />
-          </Button>
-          <Button onClick={() => setDelModal(true)}>
+          </IconButton>
+          <IconButton onClick={() => setDelModal(true)}>
             <DeleteIcon />
-          </Button>
+          </IconButton>
         </Box>
       </Box>
       <CustomModal

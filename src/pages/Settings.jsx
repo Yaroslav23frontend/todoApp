@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +17,9 @@ import { useTranslation } from "react-i18next";
 import ChangeLan from "../components/ChangeLan";
 import i18next from "i18next";
 import CustomBox from "../components/CustomBox";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import IconButton from "@mui/material/IconButton";
+import { blue } from "@mui/material/colors";
 export default function Settings({ back }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -83,14 +84,14 @@ export default function Settings({ back }) {
 
   return (
     <Paper sx={styles.paper}>
-      <Button
+      <IconButton
         sx={styles.buttonBack}
         onClick={() => {
           navigate(-1);
         }}
       >
-        {t("buttons.back")}
-      </Button>
+        <ArrowBackIcon sx={styles.buttonIcon} />
+      </IconButton>
       <CustomBox maxHeight={"100vh"}>
         <Box sx={styles.box}>
           <ChangeLan id="lan" label="lan" value={language} setValue={setLan} />
@@ -238,5 +239,8 @@ const styles = {
   buttonBack: {
     display: "flex",
     alignSelf: "flex-start",
+  },
+  buttonIcon: {
+    color: blue[600],
   },
 };

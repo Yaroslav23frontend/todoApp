@@ -6,6 +6,7 @@ import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useTranslation } from "react-i18next";
+import { Typography } from "@mui/material";
 export default function CustomModal({
   open,
   handleConfirm,
@@ -60,8 +61,6 @@ export default function CustomModal({
     onSubmit: (values) => {
       const data = values;
       handleConfirm(data);
-      values.item = "";
-      values.date = "";
     },
   });
   if (result !== "") {
@@ -175,7 +174,7 @@ export default function CustomModal({
         aria-describedby="parent-modal-description"
       >
         <Box sx={styles.box}>
-          <p id="parent-modal-description">{massege}</p>
+          <Typography id="parent-modal-description">{massege}</Typography>
           <Box sx={styles.boxButtons}>
             <Button onClick={handleConfirm}>{t("buttons.delete")}</Button>
             <Button onClick={handleCancele}>{t("buttons.cancel")}</Button>
@@ -199,6 +198,11 @@ const styles = {
     px: 4,
     pb: 3,
     textAlign: "center",
+    height: "180px",
+    display: "flex",
+    gap: "15px",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   boxButtons: {
     display: "flex",
