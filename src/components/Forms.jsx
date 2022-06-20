@@ -402,6 +402,9 @@ const styles = {
     maxWidth: "400px",
     padding: "10px",
     width: "100%",
+    ["@media (max-width:780px)"]: {
+      maxWidth: "320px",
+    },
   },
   inputBox: {
     display: "flex",

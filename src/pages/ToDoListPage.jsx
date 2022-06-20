@@ -307,4 +307,7 @@ const styles = {
     left: "50%",
     transform: "translate(-50%, -50%)",
   },
+  tabs: {
+    width: "100%",
+  },
 };
