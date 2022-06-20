@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Boards from "../pages/Boards";
 import EmailChangedSuccess from "../pages/EmailChangedSuccess";
+import NotFound from "../pages/NotFound";
 import PasswordChanged from "../pages/PasswordChanged";
 import Reset from "../pages/Reset";
 import ResetEmail from "../pages/ResetEmail";
@@ -39,6 +40,7 @@ export default function AppRouter() {
           <Route path="/userDeleted" element={<UserDeleted />} />
         </>
       )}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
