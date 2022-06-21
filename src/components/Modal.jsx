@@ -57,7 +57,7 @@ export default function CustomModal({
       item: item.item,
       date: item.date,
     },
-    validationSchema: validationSchema,
+    validationSchema: validationSchemaEditItem,
     onSubmit: (values) => {
       const data = values;
       handleConfirm(data);

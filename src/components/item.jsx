@@ -85,6 +85,7 @@ export default function Item({ data, id, listId, boardName }) {
     },
     buttonBox: {
       justifySelf: "flex-end",
+      width: "50px",
     },
   };
   function dateColor() {
