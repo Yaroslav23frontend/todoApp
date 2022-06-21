@@ -65,12 +65,20 @@ export default function Board({ data }) {
       gap: "10px",
       alignItems: "center",
     },
+    boardName: {
+      display: "flex",
+      justifyContent: "flex-start",
+    },
   };
 
   return (
     <>
       <Box sx={styles.box}>
-        <Button onClick={() => navigate(`../boards/${data}`)} color="inherit">
+        <Button
+          sx={styles.boardName}
+          onClick={() => navigate(`../boards/${data}`)}
+          color="inherit"
+        >
           {data}
         </Button>
         <Box>

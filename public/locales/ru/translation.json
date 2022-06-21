@@ -102,10 +102,12 @@
   },
   "messagesItems": {
     "noTasks": "У вас пока нет задач",
-    "offline": "Пожалуйста, проверьте подключение к интернету"
+    "offline": "Пожалуйста, проверьте подключение к интернету",
+    "notFound": "Ничего не найдено"
   },
   "messagesBoards": {
-    "noTasks": "You don't have any boards yet",
-    "offline": "Please check your internet connection"
+    "noTasks": "У вас пока нет созданных досок",
+    "offline": "Пожалуйста, проверьте подключение к интернету",
+    "notFound": "Ничего не найдено"
   }
 }

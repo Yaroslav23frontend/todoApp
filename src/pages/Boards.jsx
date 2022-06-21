@@ -19,6 +19,7 @@ import Board from "../components/Board";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTranslation } from "react-i18next";
 import { blue } from "@mui/material/colors";
+import BackspaceIcon from "@mui/icons-material/Backspace";
 export default function Boards() {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -67,9 +68,9 @@ export default function Boards() {
             InputProps={{
               endAdornment:
                 searchData !== "" ? (
-                  <Button onClick={() => setSearchData("")}>
-                    {t("buttons.clear")}
-                  </Button>
+                  <IconButton onClick={() => setSearchData("")}>
+                    <BackspaceIcon />
+                  </IconButton>
                 ) : (
                   ""
                 ),
@@ -81,9 +82,16 @@ export default function Boards() {
               <CircularProgress />
             ) : (
               <>
-                {data.length === 0 ? (
+                {data.length === 0 && boards.length === 0 ? (
                   <Typography sx={styles.text} variant="h6" component="h2">
                     {t("messagesBoards.noTasks")}
+                  </Typography>
+                ) : (
+                  <></>
+                )}
+                {data.length === 0 ? (
+                  <Typography sx={styles.text} variant="h6" component="h2">
+                    {t("messagesBoards.notFound")}
                   </Typography>
                 ) : (
                   <></>

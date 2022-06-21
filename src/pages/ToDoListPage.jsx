@@ -26,6 +26,8 @@ import { addItems } from "../store/action";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTranslation } from "react-i18next";
 import { blue } from "@mui/material/colors";
+import BackspaceIcon from "@mui/icons-material/Backspace";
+import { Typography } from "@mui/material";
 export default function ToDoListPage({ match }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -113,9 +115,9 @@ export default function ToDoListPage({ match }) {
             InputProps={{
               endAdornment:
                 searchData !== "" ? (
-                  <Button onClick={() => setSearchData("")}>
-                    {t("buttons.clear")}
-                  </Button>
+                  <IconButton onClick={() => setSearchData("")}>
+                    <BackspaceIcon />
+                  </IconButton>
                 ) : (
                   ""
                 ),

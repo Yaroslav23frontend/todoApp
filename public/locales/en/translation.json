@@ -103,10 +103,12 @@
   },
   "messagesItems": {
     "noTasks": "You don't have any tasks yet",
-    "offline": "Please check your internet connection"
+    "offline": "Please check your internet connection",
+    "notFound": "Not found"
   },
   "messagesBoards": {
     "noTasks": "You don't have any boards yet",
-    "offline": "Please check your internet connection"
+    "offline": "Please check your internet connection",
+    "notFound": "Not found"
   }
 }

@@ -94,6 +94,13 @@ export default function Items({
                 />
               );
             })}
+            {filteredData.length === 0 ? (
+              <Typography sx={styles.text} variant="h6" component="h2">
+                {t("messagesItems.notFound")}
+              </Typography>
+            ) : (
+              <></>
+            )}
           </>
         )}
       </FormGroup>
