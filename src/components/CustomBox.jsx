@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) =>
   createStyles({
     scroll: {
       width: "95%",
-      maxHeight: "calc(100vh - 300px)",
+      maxHeight: "calc(100vh - 350px)",
       overflowY: "auto",
       marginTop: 10,
       display: "flex",
