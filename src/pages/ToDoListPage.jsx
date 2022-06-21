@@ -99,30 +99,30 @@ export default function ToDoListPage({ match }) {
         <IconButton onClick={() => navigate("../boards")}>
           <ArrowBackIcon sx={styles.buttonIcon} />
         </IconButton>
+        <TextField
+          sx={styles.inputSearch}
+          id="standard-basic"
+          label={t("placeholders.search")}
+          variant="standard"
+          value={searchData}
+          onChange={(e) => {
+            setSearchData(e.target.value);
+          }}
+          InputProps={{
+            endAdornment:
+              searchData !== "" ? (
+                <IconButton onClick={() => setSearchData("")}>
+                  <BackspaceIcon />
+                </IconButton>
+              ) : (
+                ""
+              ),
+          }}
+        />
       </Box>
 
       {isVerified ? (
         <>
-          <TextField
-            sx={styles.inputSearch}
-            id="standard-basic"
-            label={t("placeholders.search")}
-            variant="standard"
-            value={searchData}
-            onChange={(e) => {
-              setSearchData(e.target.value);
-            }}
-            InputProps={{
-              endAdornment:
-                searchData !== "" ? (
-                  <IconButton onClick={() => setSearchData("")}>
-                    <BackspaceIcon />
-                  </IconButton>
-                ) : (
-                  ""
-                ),
-            }}
-          />
           <Tabs
             value={valueNav}
             onChange={handleChangeIndexNav}
@@ -138,56 +138,62 @@ export default function ToDoListPage({ match }) {
           </Tabs>
           <Box
             sx={{
-              display: "flex",
               width: "95%",
-              gap: 2,
-              alignSelf: "flex-start",
               marginRight: "auto",
               marginLeft: "auto",
+              ["@media (max-width:780px)"]: {
+                display: "flex",
+                justifyContent: "center",
+              },
             }}
           >
-            <FormControl variant="standard" sx={styles.select}>
-              <InputLabel id="demo-simple-select-standard-label">
-                {t("filters.filter")}
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
-                value={filter}
-                onChange={(e) => {
-                  setFilter(e.target.value);
-                }}
-                label={t("filters.filter")}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={"Today"}>{t("filters.today")}</MenuItem>
-                <MenuItem value={"Overdue"}>{t("filters.overdue")}</MenuItem>
-                <MenuItem value={"Upcoming"}>{t("filters.upcoming")}</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl variant="standard" sx={styles.select}>
-              <InputLabel id="demo-simple-select-standard-label2">
-                {t("filters.sort")}
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard2"
-                value={sort}
-                onChange={(e) => {
-                  setSort(e.target.value);
-                }}
-                label="Sort"
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={"A to Z"}>A to Z</MenuItem>
-                <MenuItem value={"Z to A"}>Z to A</MenuItem>
-              </Select>
-            </FormControl>
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <FormControl variant="standard" sx={styles.select}>
+                <InputLabel id="demo-simple-select-standard-label">
+                  {t("filters.filter")}
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-standard-label"
+                  id="demo-simple-select-standard"
+                  value={filter}
+                  onChange={(e) => {
+                    setFilter(e.target.value);
+                  }}
+                  label={t("filters.filter")}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={"Today"}>{t("filters.today")}</MenuItem>
+                  <MenuItem value={"Overdue"}>{t("filters.overdue")}</MenuItem>
+                  <MenuItem value={"Upcoming"}>
+                    {t("filters.upcoming")}
+                  </MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl variant="standard" sx={styles.select}>
+                <InputLabel id="demo-simple-select-standard-label2">
+                  {t("filters.sort")}
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-standard-label"
+                  id="demo-simple-select-standard2"
+                  value={sort}
+                  onChange={(e) => {
+                    setSort(e.target.value);
+                  }}
+                  label="Sort"
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value={"A to Z"}>A to Z</MenuItem>
+                  <MenuItem value={"Z to A"}>Z to A</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
           </Box>
+
           <Box sx={styles.progress}>
             {loading ? <CircularProgress /> : <></>}
           </Box>
@@ -236,7 +242,12 @@ const styles = {
     justifyContent: "center",
   },
   inputSearch: {
-    width: "calc(100% - 50px)",
+    position: "absolute",
+    left: "50%",
+    top: 0,
+    transform: "translateX(-50%)",
+    width: "calc(100% - 120px)",
+    maxWidth: "800px",
     marginBottom: "20px",
   },
   inputAddItem: {
@@ -258,6 +269,7 @@ const styles = {
   },
   tabs: {
     marginBottom: "10px",
+    marginTop: 1,
   },
   topNav: {
     display: "flex",
