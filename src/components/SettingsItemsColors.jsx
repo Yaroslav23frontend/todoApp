@@ -34,9 +34,6 @@ export default function SettingsItemsColors({ label, value, setValue, id }) {
           label={label}
           MenuProps={MenuProps}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
           <MenuItem value={"black"}>{t("colors.black")}</MenuItem>
           <MenuItem value={"white"}>{t("colors.white")}</MenuItem>
           <MenuItem value={"gray"}>{t("colors.gray")}</MenuItem>

@@ -34,9 +34,6 @@ export default function ChangeLan({ label, value, setValue, id }) {
           label={label}
           MenuProps={MenuProps}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
           <MenuItem value={"en"}>{t("settings.lan.en")}</MenuItem>
           <MenuItem value={"ukr"}>{t("settings.lan.ua")}</MenuItem>
           <MenuItem value={"ru"}>{t("settings.lan.ru")}</MenuItem>
