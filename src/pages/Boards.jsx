@@ -101,8 +101,8 @@ export default function Boards() {
           </Box>
 
           <CustomBox>
-            {data.map((el) => {
-              return <Board key={el} data={el} />;
+            {data.map((el, id) => {
+              return <Board key={el} data={el} idItem={id} />;
             })}
           </CustomBox>
 

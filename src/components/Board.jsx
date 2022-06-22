@@ -11,7 +11,7 @@ import CustomModal from "./Modal";
 import { useTranslation } from "react-i18next";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-export default function Board({ data }) {
+export default function Board({ data, idItem }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,7 +34,8 @@ export default function Board({ data }) {
     setDelModal(false);
   }
   async function renameBoard(docName) {
-    const result = [...boards.filter((el) => el !== data), docName];
+    const result = JSON.parse(JSON.stringify(boards));
+    result[idItem] = docName;
     dispatch({ type: addBoards, payload: result });
     const docSnap = await getDoc(doc(db, `${id}`, data));
     if (docSnap.exists()) {

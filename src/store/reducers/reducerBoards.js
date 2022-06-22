@@ -9,7 +9,6 @@ export function reducerBoards(state = [], action) {
         return [];
       }
       return [...action.payload];
-
     case deleteBoard:
       return [...state.filter((el) => el !== action.payload)];
     default:
